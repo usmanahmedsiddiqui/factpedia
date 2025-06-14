@@ -1,5 +1,7 @@
 package com.sample.factpedia.features.categories.domain.repository
 
+import com.sample.factpedia.core.data.model.mapToDomain
+import com.sample.factpedia.core.domain.model.Fact
 import com.sample.factpedia.features.categories.data.api.CategoryApi
 import com.sample.factpedia.features.categories.data.model.mapToDomain
 import com.sample.factpedia.features.categories.data.repository.CategoryRepository
@@ -11,5 +13,9 @@ class DefaultCategoryRepository @Inject constructor(
 ) : CategoryRepository {
     override suspend fun getCategories(): List<Category> {
         return categoryApi.getCategories().map { it.mapToDomain() }
+    }
+
+    override suspend fun getFactsByCategoryId(categoryId: Int): List<Fact> {
+        return categoryApi.getFactsByCategoryId(categoryId).map { it.mapToDomain() }
     }
 }
