@@ -11,15 +11,31 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.lifecycleScope
+import com.sample.factpedia.core.common.result.Response
+import com.sample.factpedia.features.categories.domain.usecase.GetCategoriesUseCase
 import com.sample.factpedia.ui.theme.FactPediaTheme
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var getCategoriesUseCase: GetCategoriesUseCase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        lifecycleScope.launch {
+            val response = getCategoriesUseCase()
+            if (response is Response.Failure) {
+                println("Usman ${response.error}")
+            }
+        }
         setContent {
             FactPediaTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+
                     Greeting(
                         name = "Android",
                         modifier = Modifier.padding(innerPadding)

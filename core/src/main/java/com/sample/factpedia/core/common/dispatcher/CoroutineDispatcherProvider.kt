@@ -1,4 +1,4 @@
-package com.sample.factpedia.core.common
+package com.sample.factpedia.core.common.dispatcher
 
 import kotlinx.coroutines.CoroutineDispatcher
 

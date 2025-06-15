@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_bad_request">Bad request. Please try again.</string>
+    <string name="error_conflict">Conflict occurred. Please retry.</string>
+    <string name="error_forbidden">Access denied. You don’t have permission.</string>
+    <string name="error_internal_server">Something went wrong on our end.</string>
+    <string name="error_not_found">Requested item not found.</string>
+    <string name="error_timeout">Connection timed out. Please try again.</string>
+    <string name="error_unknown">An unknown error occurred. Please try again later.</string>
+    <string name="error_unauthorized">You are not authorized. Please log in again.</string>
+    <string name="error_unavailable">Service is currently unavailable. Please try again later.</string>
+    <string name="error_precondition_failed">Request cannot be completed due to unmet conditions.</string>
+</resources>

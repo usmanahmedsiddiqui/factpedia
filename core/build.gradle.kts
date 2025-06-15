@@ -33,4 +33,7 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.okhttp3)
     implementation(libs.okhttp3.logginginterceptor)
+
+    // Compose
+    implementation(libs.compose.ui)
 }

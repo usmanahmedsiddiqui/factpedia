@@ -66,4 +66,7 @@ dependencies {
 
     // Kotlin
     implementation(libs.androidx.core.ktx)
+
+    implementation(projects.features.categories)
+    implementation(projects.core)
 }
