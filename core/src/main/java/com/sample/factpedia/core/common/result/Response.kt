@@ -15,7 +15,7 @@ inline fun <D, E : Error, F : Error> Response<D, E>.mapError(transform: (E) -> F
     is Response.Failure -> Response.Failure(transform(this.error))
 }
 
-inline fun <D, E : Error> Response<D, E>.fold(
+inline fun <D, E : DataError> Response<D, E>.fold(
     onSuccess: (D) -> Unit,
     onFailure: (E) -> Unit
 ) {

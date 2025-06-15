@@ -1,13 +1,10 @@
 package com.sample.factpedia.core.util
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import android.content.Context
 import com.sample.factpedia.core.R
 import com.sample.factpedia.core.common.result.DataError
 
-@Composable
-fun DataError.toUiMessageRes(): String {
-    val context = LocalContext.current
+fun DataError.toUiMessageRes(context: Context): String {
     return when (this) {
         is DataError.Network -> when (this) {
             DataError.Network.BAD_REQUEST -> context.getString(R.string.error_bad_request)
