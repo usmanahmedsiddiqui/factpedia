@@ -1,8 +1,10 @@
 package com.sample.factpedia.features.categories.data.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CategoryApiModel(
-    @SerializedName("id") val id: Int,
-    @SerializedName("name") val name: String,
+    @SerialName("id") val id: Int,
+    @SerialName("name") val name: String,
 )

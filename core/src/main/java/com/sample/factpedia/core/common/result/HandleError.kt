@@ -1,5 +1,6 @@
 package com.sample.factpedia.core.common.result
 
+import android.util.Log
 import kotlinx.coroutines.CancellationException
 import java.net.SocketTimeoutException
 
@@ -21,7 +22,10 @@ suspend fun <D> handleError(block: suspend () -> D): Response<D, DataError> {
             is InternalServerException -> DataError.Network.INTERNAL_SERVER
             is SocketTimeoutException -> DataError.Network.TIMEOUT
             is NetworkException -> DataError.Network.INTERNAL_SERVER
-            else -> throw NotExpectedException()
+            else -> {
+                Log.e("handleError", e.stackTraceToString())
+                throw NotExpectedException()
+            }
         }
 
         Response.Failure(mappedError)

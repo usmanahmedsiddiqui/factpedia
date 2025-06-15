@@ -1,0 +1,19 @@
+package com.sample.factpedia.features.categories.domain.repository
+
+import com.sample.factpedia.core.data.model.FactApiModel
+import com.sample.factpedia.features.categories.data.api.CategoryApi
+import com.sample.factpedia.features.categories.data.model.CategoryApiModel
+import com.sample.factpedia.features.categories.data.repository.CategoryDataSource
+import javax.inject.Inject
+
+class RemoteCategoryDataSource @Inject constructor(
+    private val categoryApi: CategoryApi,
+): CategoryDataSource {
+    override suspend fun getCategories(): List<CategoryApiModel> {
+        return categoryApi.getCategories()
+    }
+
+    override suspend fun getFactsByCategoryId(categoryId: Int): List<FactApiModel> {
+        return categoryApi.getFactsByCategoryId(categoryId)
+    }
+}

@@ -4,60 +4,52 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.lifecycleScope
-import com.sample.factpedia.core.common.result.Response
-import com.sample.factpedia.features.categories.domain.usecase.GetCategoriesUseCase
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.sample.factpedia.features.categories.presentation.ui.CategoryListScreen
+import com.sample.factpedia.features.categories.presentation.ui.FactsByCategoryScreen
 import com.sample.factpedia.ui.theme.FactPediaTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import javax.inject.Inject
+import kotlinx.serialization.Serializable
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @Inject
-    lateinit var getCategoriesUseCase: GetCategoriesUseCase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        lifecycleScope.launch {
-            val response = getCategoriesUseCase()
-            if (response is Response.Failure) {
-                println("Usman ${response.error}")
-            }
-        }
+
         setContent {
             FactPediaTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination = CategoryListScreenRoute
+                ) {
+                    composable<CategoryListScreenRoute> {
+                        CategoryListScreen { category ->
+                            navController.navigate(
+                                FactsByCategoryScreenRoute(
+                                    categoryId = category.id,
+                                    categoryNane = category.name
+                                )
+                            )
+                        }
+                    }
 
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    composable<FactsByCategoryScreenRoute> {
+                        val args = it.toRoute<FactsByCategoryScreenRoute>()
+                        FactsByCategoryScreen(args.categoryId, args.categoryNane)
+                    }
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+@Serializable
+object CategoryListScreenRoute
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    FactPediaTheme {
-        Greeting("Android")
-    }
-}
+@Serializable
+data class FactsByCategoryScreenRoute(val categoryId: Int, val categoryNane: String)

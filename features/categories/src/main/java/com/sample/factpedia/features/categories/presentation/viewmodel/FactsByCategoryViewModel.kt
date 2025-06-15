@@ -7,9 +7,7 @@ import com.sample.factpedia.features.categories.domain.usecase.GetFactsByCategor
 import com.sample.factpedia.features.categories.presentation.state.FactsByCategoryScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,19 +15,11 @@ import javax.inject.Inject
 @HiltViewModel
 class FactsByCategoryViewModel @Inject constructor(
     private val getFactsByCategoryIdUseCase: GetFactsByCategoryIdUseCase
-): ViewModel() {
+) : ViewModel() {
     private val _state = MutableStateFlow(FactsByCategoryScreenState())
-    val state = _state
-        .onStart {
-            loadFactsByCategory()
-        }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.Lazily,
-            FactsByCategoryScreenState()
-        )
+    val state = _state.asStateFlow()
 
-    private fun loadFactsByCategory() {
+    fun loadFactsByCategory(categoryId: Int) {
         _state.update { currentState ->
             currentState.copy(
                 isLoading = true,
@@ -37,7 +27,7 @@ class FactsByCategoryViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            getFactsByCategoryIdUseCase(1).fold(
+            getFactsByCategoryIdUseCase(categoryId).fold(
                 onSuccess = { facts ->
                     _state.update { currentState ->
                         currentState.copy(
