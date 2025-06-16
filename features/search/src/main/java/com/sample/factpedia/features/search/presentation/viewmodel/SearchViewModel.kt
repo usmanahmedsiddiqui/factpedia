@@ -73,7 +73,6 @@ class SearchViewModel @Inject constructor(
     }
 
     private suspend fun performSearch(query: String) {
-        println("Usman perform search $query")
         searchFactsUseCase(query).fold(
             onSuccess = { facts ->
                 _state.update { it.copy(searchResults = facts, error = null) }
