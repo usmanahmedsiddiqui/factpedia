@@ -70,5 +70,6 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     implementation(projects.features.categories)
+    implementation(projects.features.search)
     implementation(projects.core)
 }

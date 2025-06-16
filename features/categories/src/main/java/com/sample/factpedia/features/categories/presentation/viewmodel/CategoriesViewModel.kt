@@ -7,6 +7,7 @@ import com.sample.factpedia.core.common.result.fold
 import com.sample.factpedia.features.categories.domain.usecase.GetCategoriesUseCase
 import com.sample.factpedia.features.categories.presentation.state.CategoryScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart

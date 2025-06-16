@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sample.factpedia.core.common.result.fold
 import com.sample.factpedia.features.categories.domain.usecase.GetFactsByCategoryIdUseCase
+import com.sample.factpedia.features.categories.presentation.state.FactsByCategoryScreenAction
 import com.sample.factpedia.features.categories.presentation.state.FactsByCategoryScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +20,13 @@ class FactsByCategoryViewModel @Inject constructor(
     private val _state = MutableStateFlow(FactsByCategoryScreenState())
     val state = _state.asStateFlow()
 
-    fun loadFactsByCategory(categoryId: Int) {
+    fun onAction(action: FactsByCategoryScreenAction) {
+        when(action) {
+            is FactsByCategoryScreenAction.LoadFactsByCategory -> loadFactsByCategory(action.categoryId)
+        }
+    }
+
+    private fun loadFactsByCategory(categoryId: Int) {
         _state.update { currentState ->
             currentState.copy(
                 isLoading = true,
@@ -47,5 +54,4 @@ class FactsByCategoryViewModel @Inject constructor(
             )
         }
     }
-
 }

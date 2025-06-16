@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.sample.factpedia.features.categories.presentation.ui.CategoryListScreen
 import com.sample.factpedia.features.categories.presentation.ui.FactsByCategoryScreen
+import com.sample.factpedia.features.search.presentation.ui.SearchScreen
 import com.sample.factpedia.ui.theme.FactPediaTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.serialization.Serializable
@@ -25,8 +26,12 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination = CategoryListScreenRoute
+                    startDestination = SearchScreenRoute
                 ) {
+                    composable<SearchScreenRoute> {
+                        SearchScreen()
+                    }
+
                     composable<CategoryListScreenRoute> {
                         CategoryListScreen { category ->
                             navController.navigate(
@@ -53,3 +58,6 @@ object CategoryListScreenRoute
 
 @Serializable
 data class FactsByCategoryScreenRoute(val categoryId: Int, val categoryNane: String)
+
+@Serializable
+object SearchScreenRoute

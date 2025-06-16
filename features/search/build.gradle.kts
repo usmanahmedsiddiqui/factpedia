@@ -1,6 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -21,4 +25,26 @@ android {
 }
 
 dependencies {
+    // Dependency Injection
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+
+    // Retrofit
+    implementation(libs.retrofit2)
+    implementation(libs.retrofit2.gsonconverter)
+    implementation(libs.gson)
+
+    // Compose
+    implementation(libs.compose.ui)
+    implementation(libs.compose.preview)
+    implementation(libs.compose.material3)
+    implementation(libs.androidx.activity.compose)
+
+    // Kotlin
+    implementation(libs.kotlinx.serialization.json)
+
+    // Navigation
+    implementation(libs.hilt.navigation.compose)
+
+    implementation(projects.core)
 }
