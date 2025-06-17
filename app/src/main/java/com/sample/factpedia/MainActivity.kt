@@ -26,12 +26,8 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination = SearchScreenRoute
+                    startDestination = CategoryListScreenRoute
                 ) {
-                    composable<SearchScreenRoute> {
-                        SearchScreen()
-                    }
-
                     composable<CategoryListScreenRoute> {
                         CategoryListScreen { category ->
                             navController.navigate(
@@ -46,6 +42,10 @@ class MainActivity : ComponentActivity() {
                     composable<FactsByCategoryScreenRoute> {
                         val args = it.toRoute<FactsByCategoryScreenRoute>()
                         FactsByCategoryScreen(args.categoryId, args.categoryNane)
+                    }
+
+                    composable<SearchScreenRoute> {
+                        SearchScreen()
                     }
                 }
             }

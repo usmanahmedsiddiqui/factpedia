@@ -47,4 +47,5 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
 
     implementation(projects.core)
+    implementation(projects.database)
 }

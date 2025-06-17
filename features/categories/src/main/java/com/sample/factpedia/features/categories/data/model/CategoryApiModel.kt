@@ -8,3 +8,4 @@ data class CategoryApiModel(
     @SerialName("id") val id: Int,
     @SerialName("name") val name: String,
 )
+

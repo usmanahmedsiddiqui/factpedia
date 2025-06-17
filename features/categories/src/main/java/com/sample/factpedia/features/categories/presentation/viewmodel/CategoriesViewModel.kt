@@ -2,14 +2,18 @@ package com.sample.factpedia.features.categories.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sample.factpedia.core.common.result.DataError
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sample.factpedia.core.common.result.fold
 import com.sample.factpedia.features.categories.domain.usecase.GetCategoriesUseCase
+import com.sample.factpedia.features.categories.domain.usecase.LoadRemoteCategoriesUseCase
+import com.sample.factpedia.features.categories.domain.usecase.SyncCategoriesUseCase
+import com.sample.factpedia.features.categories.presentation.actions.CategoryScreenAction
 import com.sample.factpedia.features.categories.presentation.state.CategoryScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -19,11 +23,13 @@ import javax.inject.Inject
 @HiltViewModel
 class CategoriesViewModel @Inject constructor(
     private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val loadRemoteCategoriesUseCase: LoadRemoteCategoriesUseCase,
+    private val syncCategoriesUseCase: SyncCategoriesUseCase,
 ) : ViewModel() {
     private val _state = MutableStateFlow(CategoryScreenState())
     val state = _state
         .onStart {
-            loadCategories()
+            observeCategories()
         }
         .stateIn(
             viewModelScope,
@@ -31,24 +37,69 @@ class CategoriesViewModel @Inject constructor(
             CategoryScreenState()
         )
 
-    private fun loadCategories() {
+    fun onAction(action: CategoryScreenAction) {
+        when (action) {
+            CategoryScreenAction.RetryClicked -> {
+                _state.update { currentState ->
+                    currentState.copy(
+                        isLoading = true,
+                    )
+                }
+
+                syncCategories()
+            }
+        }
+    }
+
+
+    private fun observeCategories() {
+        println("Usman observeCategories")
         _state.update { currentState ->
+            println("Usman updating loading state")
             currentState.copy(
                 isLoading = true,
             )
         }
 
         viewModelScope.launch {
-            getCategoriesUseCase().fold(
-                onSuccess = { categories ->
+            getCategoriesUseCase()
+                .filter { it.isNotEmpty() }
+                .distinctUntilChanged()
+                .collect { categories ->
+                    /**
+                     * Update categories from local database
+                     */
+                    println("Usman updating categories from local database")
                     _state.update { currentState ->
                         currentState.copy(
                             categories = categories,
                             isLoading = false,
                         )
                     }
+                }
+        }
+
+        syncCategories()
+    }
+
+    private fun syncCategories() {
+        viewModelScope.launch {
+            println("Usman syncCategories from remote database")
+            loadRemoteCategoriesUseCase().fold(
+                onSuccess = {
+                    /**
+                     * When receive successful response from server sync it with
+                     * local database
+                     */
+                    println("Usman updating database to store data")
+                    syncCategoriesUseCase(it)
                 },
                 onFailure = { error ->
+                    /**
+                     * It is possible that the local db has the data and
+                     * server returns error so update the state accordingly
+                     */
+                    println("Usman updating error")
                     _state.update { currentState ->
                         currentState.copy(
                             error = error,

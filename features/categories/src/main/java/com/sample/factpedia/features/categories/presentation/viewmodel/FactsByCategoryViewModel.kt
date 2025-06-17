@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sample.factpedia.core.common.result.fold
 import com.sample.factpedia.features.categories.domain.usecase.GetFactsByCategoryIdUseCase
-import com.sample.factpedia.features.categories.presentation.state.FactsByCategoryScreenAction
+import com.sample.factpedia.features.categories.presentation.actions.FactsByCategoryScreenAction
 import com.sample.factpedia.features.categories.presentation.state.FactsByCategoryScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
