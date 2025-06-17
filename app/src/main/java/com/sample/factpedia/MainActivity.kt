@@ -8,8 +8,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.sample.factpedia.features.categories.presentation.navigation.CategoryListScreenRoute
+import com.sample.factpedia.features.categories.presentation.navigation.FactsByCategoryScreenRoute
 import com.sample.factpedia.features.categories.presentation.ui.CategoryListScreen
 import com.sample.factpedia.features.categories.presentation.ui.FactsByCategoryScreen
+import com.sample.factpedia.features.search.presentation.navigation.SearchScreenRoute
 import com.sample.factpedia.features.search.presentation.ui.SearchScreen
 import com.sample.factpedia.ui.theme.FactPediaTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,12 +55,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-@Serializable
-object CategoryListScreenRoute
-
-@Serializable
-data class FactsByCategoryScreenRoute(val categoryId: Int, val categoryNane: String)
-
-@Serializable
-object SearchScreenRoute

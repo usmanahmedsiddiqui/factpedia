@@ -19,4 +19,8 @@ object DaosModule {
         database: FactPediaDatabase,
     ): FactDao = database.factDao()
 
+    @Provides
+    fun providesBookMarkDao(
+        database: FactPediaDatabase,
+    ): BookmarkDao = database.bookmarkDao()
 }

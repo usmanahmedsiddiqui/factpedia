@@ -10,11 +10,12 @@ fun FactApiModel.asDomainModel() = Fact(
     categoryId = this.categoryId,
 )
 
-fun FactEntity.asDomainModel() = Fact(
+fun FactEntity.asDomainModel(isBookmarked: Boolean) = Fact(
     id = this.id,
     fact = this.fact,
     categoryName = this.categoryName,
     categoryId = this.categoryId,
+    isBookmarked = isBookmarked,
 )
 
 fun Fact.asEntity() = FactEntity(

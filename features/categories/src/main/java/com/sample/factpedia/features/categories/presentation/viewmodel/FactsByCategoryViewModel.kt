@@ -1,8 +1,10 @@
 package com.sample.factpedia.features.categories.presentation.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sample.factpedia.core.common.result.fold
+import com.sample.factpedia.core.domain.usecase.ToggleBookmarkUseCase
 import com.sample.factpedia.features.categories.domain.usecase.GetFactsByCategoryIdUseCase
 import com.sample.factpedia.features.categories.domain.usecase.LoadRemoteFactsByCategoryUseCase
 import com.sample.factpedia.features.categories.domain.usecase.SyncFactsByCategoriesUseCase
@@ -10,26 +12,48 @@ import com.sample.factpedia.features.categories.presentation.actions.FactsByCate
 import com.sample.factpedia.features.categories.presentation.state.FactsByCategoryScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class FactsByCategoryViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getFactsByCategoryIdUseCase: GetFactsByCategoryIdUseCase,
     private val loadRemoteFactsByCategoryUseCase: LoadRemoteFactsByCategoryUseCase,
     private val syncFactsByCategoriesUseCase: SyncFactsByCategoriesUseCase,
+    private val toggleBookmarkUseCase: ToggleBookmarkUseCase,
 ) : ViewModel() {
+
+    private val categoryId: Int = checkNotNull(savedStateHandle["categoryId"])
+
     private val _state = MutableStateFlow(FactsByCategoryScreenState())
-    val state = _state.asStateFlow()
+
+    val state = _state
+        .onStart {
+            observeFacts(categoryId)
+        }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Lazily,
+            FactsByCategoryScreenState()
+        )
 
     fun onAction(action: FactsByCategoryScreenAction) {
         when(action) {
-            is FactsByCategoryScreenAction.LoadFactsByCategory -> observeFacts(action.categoryId)
             is FactsByCategoryScreenAction.RetryClicked -> retry(action.categoryId)
+            is FactsByCategoryScreenAction.ToggleBookmark -> toggleBookmark(action.factId, action.isBookmarked)
+        }
+    }
+
+    private fun toggleBookmark(factId: Int, isBookmarked: Boolean) {
+        viewModelScope.launch {
+            toggleBookmarkUseCase(factId, isBookmarked)
         }
     }
 
@@ -68,6 +92,7 @@ class FactsByCategoryViewModel @Inject constructor(
                      * When receive successful response from server sync it with
                      * local database
                      */
+
                     syncFactsByCategoriesUseCase(categoryId = categoryId, facts = facts)
                 },
                 onFailure = { error ->

@@ -5,4 +5,5 @@ data class Fact(
     val fact: String,
     val categoryId: Int,
     val categoryName: String,
+    val isBookmarked: Boolean = false
 )
