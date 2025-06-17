@@ -2,7 +2,6 @@ package com.sample.factpedia.features.categories.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sample.factpedia.core.common.result.fold
 import com.sample.factpedia.features.categories.domain.usecase.GetCategoriesUseCase
 import com.sample.factpedia.features.categories.domain.usecase.LoadRemoteCategoriesUseCase
@@ -40,22 +39,23 @@ class CategoriesViewModel @Inject constructor(
     fun onAction(action: CategoryScreenAction) {
         when (action) {
             CategoryScreenAction.RetryClicked -> {
-                _state.update { currentState ->
-                    currentState.copy(
-                        isLoading = true,
-                    )
-                }
-
-                syncCategories()
+                retry()
             }
         }
     }
 
+    private fun retry() {
+        _state.update { currentState ->
+            currentState.copy(
+                isLoading = true,
+                error = null
+            )
+        }
+        syncCategories()
+    }
 
     private fun observeCategories() {
-        println("Usman observeCategories")
         _state.update { currentState ->
-            println("Usman updating loading state")
             currentState.copy(
                 isLoading = true,
             )
@@ -69,7 +69,6 @@ class CategoriesViewModel @Inject constructor(
                     /**
                      * Update categories from local database
                      */
-                    println("Usman updating categories from local database")
                     _state.update { currentState ->
                         currentState.copy(
                             categories = categories,
@@ -84,22 +83,19 @@ class CategoriesViewModel @Inject constructor(
 
     private fun syncCategories() {
         viewModelScope.launch {
-            println("Usman syncCategories from remote database")
             loadRemoteCategoriesUseCase().fold(
-                onSuccess = {
+                onSuccess = { categories ->
                     /**
                      * When receive successful response from server sync it with
                      * local database
                      */
-                    println("Usman updating database to store data")
-                    syncCategoriesUseCase(it)
+                    syncCategoriesUseCase(categories)
                 },
                 onFailure = { error ->
                     /**
                      * It is possible that the local db has the data and
                      * server returns error so update the state accordingly
                      */
-                    println("Usman updating error")
                     _state.update { currentState ->
                         currentState.copy(
                             error = error,

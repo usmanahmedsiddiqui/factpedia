@@ -10,7 +10,7 @@ class SyncCategoriesUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(categories: List<Category>) {
         val entities = categories.map(Category::asEntity)
-        categoryDao.upsertTopics(entities)
+        categoryDao.upsertCategories(entities)
 
         val remoteIds = entities.map { it.id }
         categoryDao.deleteCategoriesNotIn(remoteIds)

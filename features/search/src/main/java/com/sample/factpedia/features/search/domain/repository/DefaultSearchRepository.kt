@@ -3,7 +3,7 @@ package com.sample.factpedia.features.search.domain.repository
 import com.sample.factpedia.core.common.result.DataError
 import com.sample.factpedia.core.common.result.Response
 import com.sample.factpedia.core.common.result.handleError
-import com.sample.factpedia.core.data.model.mapToDomain
+import com.sample.factpedia.core.data.model.asDomainModel
 import com.sample.factpedia.core.domain.model.Fact
 import com.sample.factpedia.features.search.data.repository.SearchDataSource
 import com.sample.factpedia.features.search.data.repository.SearchRepository
@@ -17,9 +17,7 @@ class DefaultSearchRepository @Inject constructor(
 ): SearchRepository {
     override suspend fun search(query: String): Response<List<Fact>, DataError> {
         return handleError {
-            searchLocalDataSource.search(query).map { it.mapToDomain() }
+            searchLocalDataSource.search(query).map { it.asDomainModel() }
         }
     }
-
-
 }

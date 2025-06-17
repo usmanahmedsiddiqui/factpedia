@@ -1,8 +1,6 @@
 package com.sample.factpedia.database.dao
 
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Upsert
 import com.sample.factpedia.database.model.CategoryEntity
@@ -15,7 +13,7 @@ interface CategoryDao {
     fun getAllCategories(): Flow<List<CategoryEntity>>
 
     @Upsert
-    suspend fun upsertTopics(categories: List<CategoryEntity>)
+    suspend fun upsertCategories(categories: List<CategoryEntity>)
 
     @Query("DELETE FROM categories WHERE id not in (:categoriesId)")
     suspend fun deleteCategoriesNotIn(categoriesId: List<Int>)

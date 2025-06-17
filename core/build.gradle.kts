@@ -40,4 +40,6 @@ dependencies {
 
     // Compose
     implementation(libs.compose.ui)
+
+    implementation(projects.database)
 }

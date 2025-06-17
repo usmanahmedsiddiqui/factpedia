@@ -14,4 +14,9 @@ object DaosModule {
         database: FactPediaDatabase,
     ): CategoryDao = database.categoryDao()
 
+    @Provides
+    fun providesFactDao(
+        database: FactPediaDatabase,
+    ): FactDao = database.factDao()
+
 }

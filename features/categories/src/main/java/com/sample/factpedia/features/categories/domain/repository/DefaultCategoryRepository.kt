@@ -3,10 +3,12 @@ package com.sample.factpedia.features.categories.domain.repository
 import com.sample.factpedia.core.common.result.DataError
 import com.sample.factpedia.core.common.result.Response
 import com.sample.factpedia.core.common.result.handleError
-import com.sample.factpedia.core.data.model.mapToDomain
+import com.sample.factpedia.core.data.model.asDomainModel
 import com.sample.factpedia.core.domain.model.Fact
 import com.sample.factpedia.database.dao.CategoryDao
+import com.sample.factpedia.database.dao.FactDao
 import com.sample.factpedia.database.model.CategoryEntity
+import com.sample.factpedia.database.model.FactEntity
 import com.sample.factpedia.features.categories.data.model.CategoryApiModel
 import com.sample.factpedia.features.categories.data.model.asDomainModel
 import com.sample.factpedia.features.categories.data.repository.CategoryDataSource
@@ -20,6 +22,7 @@ import javax.inject.Inject
 class DefaultCategoryRepository @Inject constructor(
     @CategoryLocalDataSource private val categoryDataSource: CategoryDataSource,
     private val categoryDao: CategoryDao,
+    private val factDao: FactDao,
 ) : CategoryRepository {
 
     override fun getCategoriesFromLocalDatabase(): Flow<List<Category>> =
@@ -30,9 +33,12 @@ class DefaultCategoryRepository @Inject constructor(
             categoryDataSource.getCategories().map(CategoryApiModel::asDomainModel)
         }
 
-    override suspend fun getFactsByCategoryId(categoryId: Int): Response<List<Fact>, DataError> {
+    override suspend fun getFactsByCategoryId(categoryId: Int): Flow<List<Fact>> =
+        factDao.getFactsByCategoryId(categoryId).map { list -> list.map(FactEntity::asDomainModel) }
+
+    override suspend fun loadRemoteFactsByCategoryId(categoryId: Int): Response<List<Fact>, DataError> {
         return handleError {
-            categoryDataSource.getFactsByCategoryId(categoryId).map { it.mapToDomain() }
+            categoryDataSource.getFactsByCategoryId(categoryId).map { it.asDomainModel() }
         }
     }
 }
