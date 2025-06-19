@@ -9,7 +9,6 @@ import com.sample.factpedia.database.dao.BookmarkDao
 import com.sample.factpedia.database.dao.CategoryDao
 import com.sample.factpedia.database.dao.FactDao
 import com.sample.factpedia.database.model.CategoryEntity
-import com.sample.factpedia.database.model.FactEntity
 import com.sample.factpedia.features.categories.data.model.CategoryApiModel
 import com.sample.factpedia.features.categories.data.model.asDomainModel
 import com.sample.factpedia.features.categories.data.repository.CategoryDataSource

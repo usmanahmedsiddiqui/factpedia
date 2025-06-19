@@ -9,11 +9,17 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface FactDao {
 
-    @Query("SELECT * FROM facts ORDER BY fact ASC")
-    fun getAllFacts(): Flow<List<FactEntity>>
+    @Query("SELECT * FROM facts WHERE id != :excludedId ORDER BY RANDOM() LIMIT 1")
+    suspend fun getRandomFactExcluding(excludedId: Int): FactEntity?
+
+    @Query("SELECT * FROM facts ORDER BY RANDOM() LIMIT 1")
+    suspend fun getRandomFact(): FactEntity?
 
     @Query("SELECT * FROM facts WHERE categoryId = :categoryId ORDER BY fact ASC")
     fun getFactsByCategoryId(categoryId: Int): Flow<List<FactEntity>>
+
+    @Query("SELECT * FROM facts ORDER BY fact ASC LIMIT 1 OFFSET :position")
+    suspend fun getFactByOffset(position: Int): FactEntity?
 
     @Upsert
     suspend fun upsertFacts(facts: List<FactEntity>)
@@ -23,4 +29,7 @@ interface FactDao {
 
     @Query("DELETE FROM facts")
     suspend fun clearFacts()
+
+    @Query(" SELECT * FROM facts WHERE id in (SELECT factId FROM bookmarks) order by fact ASC")
+    fun getBookmarkedFacts(): Flow<List<FactEntity>>
 }

@@ -12,4 +12,5 @@ data class FactEntity (
     val fact: String,
     val categoryId: Int,
     val categoryName: String,
+    val createdAt: Long = System.currentTimeMillis()
 )

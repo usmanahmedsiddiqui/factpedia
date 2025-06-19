@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sample.factpedia.core.common.result.fold
 import com.sample.factpedia.features.search.domain.usecase.SearchFactsUseCase
-import com.sample.factpedia.features.search.presentation.state.SearchScreenAction
+import com.sample.factpedia.features.search.presentation.action.SearchScreenAction
 import com.sample.factpedia.features.search.presentation.state.SearchScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview

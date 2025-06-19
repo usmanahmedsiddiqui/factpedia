@@ -8,12 +8,10 @@ import com.sample.factpedia.core.domain.model.Fact
 import com.sample.factpedia.features.search.data.repository.SearchDataSource
 import com.sample.factpedia.features.search.data.repository.SearchRepository
 import com.sample.factpedia.features.search.di.SearchLocalDataSource
-import com.sample.factpedia.features.search.di.SearchRemoteDataSource
 import javax.inject.Inject
 
 class DefaultSearchRepository @Inject constructor(
     @SearchLocalDataSource private val searchLocalDataSource: SearchDataSource,
-    @SearchRemoteDataSource private val searchRemoteDataSource: SearchDataSource
 ): SearchRepository {
     override suspend fun search(query: String): Response<List<Fact>, DataError> {
         return handleError {

@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sample.factpedia.core.util.toUiMessageRes
-import com.sample.factpedia.features.search.presentation.state.SearchScreenAction
+import com.sample.factpedia.features.search.presentation.action.SearchScreenAction
 import com.sample.factpedia.features.search.presentation.viewmodel.SearchViewModel
 
 @Composable

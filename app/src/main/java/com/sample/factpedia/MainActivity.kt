@@ -8,15 +8,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.sample.factpedia.features.bookmarks.presentation.navigation.BookmarkScreenRoute
+import com.sample.factpedia.features.bookmarks.presentation.ui.BookmarkScreen
 import com.sample.factpedia.features.categories.presentation.navigation.CategoryListScreenRoute
 import com.sample.factpedia.features.categories.presentation.navigation.FactsByCategoryScreenRoute
 import com.sample.factpedia.features.categories.presentation.ui.CategoryListScreen
 import com.sample.factpedia.features.categories.presentation.ui.FactsByCategoryScreen
+import com.sample.factpedia.features.feed.presentation.navigation.FeedScreenRoute
+import com.sample.factpedia.features.feed.presentation.ui.FeedScreen
 import com.sample.factpedia.features.search.presentation.navigation.SearchScreenRoute
 import com.sample.factpedia.features.search.presentation.ui.SearchScreen
 import com.sample.factpedia.ui.theme.FactPediaTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.serialization.Serializable
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -29,8 +32,13 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination = CategoryListScreenRoute
+                    startDestination = FeedScreenRoute
                 ) {
+
+                    composable<FeedScreenRoute> {
+                        FeedScreen()
+                    }
+
                     composable<CategoryListScreenRoute> {
                         CategoryListScreen { category ->
                             navController.navigate(
@@ -49,6 +57,10 @@ class MainActivity : ComponentActivity() {
 
                     composable<SearchScreenRoute> {
                         SearchScreen()
+                    }
+
+                    composable<BookmarkScreenRoute> {
+                        BookmarkScreen()
                     }
                 }
             }

@@ -71,5 +71,7 @@ dependencies {
 
     implementation(projects.features.categories)
     implementation(projects.features.search)
+    implementation(projects.features.bookmarks)
+    implementation(projects.features.feed)
     implementation(projects.core)
 }
