@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.compose.preview)
     implementation(libs.compose.material3)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.compose.icons.extended)
     debugImplementation(libs.compose.tooling)
 
     // ViewModel + Lifecycle
