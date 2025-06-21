@@ -39,6 +39,7 @@ dependencies {
     implementation(libs.compose.preview)
     implementation(libs.compose.material3)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.compose.icons.extended)
 
     // Kotlin
     implementation(libs.kotlinx.serialization.json)
@@ -47,4 +48,5 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
 
     implementation(projects.core)
+    implementation(projects.database)
 }

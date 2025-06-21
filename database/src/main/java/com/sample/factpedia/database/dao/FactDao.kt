@@ -32,4 +32,7 @@ interface FactDao {
 
     @Query(" SELECT * FROM facts WHERE id in (SELECT factId FROM bookmarks) order by fact ASC")
     fun getBookmarkedFacts(): Flow<List<FactEntity>>
+
+    @Query("SELECT * FROM facts WHERE id IN (:ids)")
+    fun getFactsByIds(ids: List<Int>): Flow<List<FactEntity>>
 }
