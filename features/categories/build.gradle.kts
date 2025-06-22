@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.compose.icons.extended)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.navigation.compose)
 
     // Kotlin
     implementation(libs.kotlinx.serialization.json)

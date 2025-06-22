@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -21,4 +23,14 @@ android {
 }
 
 dependencies {
+    // Compose (convert into plugin later)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.preview)
+    implementation(libs.compose.material3)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.compose.icons.extended)
+    implementation(libs.navigation.compose)
+
+    // Kotlin
+    implementation(libs.kotlinx.serialization.json)
 }
