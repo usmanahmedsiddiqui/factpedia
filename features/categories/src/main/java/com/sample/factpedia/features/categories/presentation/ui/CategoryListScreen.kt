@@ -62,7 +62,7 @@ fun CategoryListScreen(
                         FactPediaText(
                             text = category.name,
                             textStyle = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onBackground,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable { onCategoryClick(category) }

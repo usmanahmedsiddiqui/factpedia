@@ -32,18 +32,17 @@ fun FactCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(Spacings.spacing24)
             .shadow(Spacings.spacing4, RoundedCornerShape(Spacings.spacing16)),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface
+            contentColor = MaterialTheme.colorScheme.onPrimary
         ),
     ) {
         Column(Modifier.padding(Spacings.spacing16)) {
             Text(
                 text = fact.fact,
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onPrimary
             )
             Spacer(modifier = Modifier.height(Spacings.spacing8))
             Row(

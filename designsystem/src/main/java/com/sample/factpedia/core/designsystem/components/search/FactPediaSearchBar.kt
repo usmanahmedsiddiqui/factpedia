@@ -2,8 +2,10 @@ package com.sample.factpedia.core.designsystem.components.search
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.sample.factpedia.core.designsystem.components.icon.FactPediaIconButton
@@ -23,12 +25,12 @@ fun FactPediaSearchBar(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier.fillMaxWidth()
-            .padding(horizontal = Spacings.spacing16),
+            .padding(Spacings.spacing16),
         placeholder = {
             FactPediaText(
                 text = placeholder,
                 textStyle = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
             )
         },
         trailingIcon = {
@@ -41,6 +43,7 @@ fun FactPediaSearchBar(
             }
         },
         singleLine = true,
-        textStyle = MaterialTheme.typography.bodyMedium
+        textStyle = MaterialTheme.typography.bodyMedium,
+        shape = RoundedCornerShape(Spacings.spacing16)
     )
 }

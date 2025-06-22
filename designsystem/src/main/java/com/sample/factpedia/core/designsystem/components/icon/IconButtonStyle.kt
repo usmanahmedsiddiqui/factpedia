@@ -9,7 +9,7 @@ object IconButtonStyles {
     val Primary =
         object : IconButtonStyle {
             @Composable
-            override fun tintColor(): Color = MaterialTheme.colorScheme.primary
+            override fun tintColor(): Color = MaterialTheme.colorScheme.onPrimary
         }
 }
 

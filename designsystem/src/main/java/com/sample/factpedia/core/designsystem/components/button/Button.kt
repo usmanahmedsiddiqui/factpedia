@@ -24,7 +24,7 @@ import com.sample.factpedia.core.designsystem.theme.Spacings
 fun FactPediaButton(
     text: String,
     modifier: Modifier = Modifier,
-    buttonStyle: ButtonStyle = ButtonStyles.Primary,
+    buttonStyle: ButtonStyle = ButtonStyles.PrimaryInverted,
     buttonSize: ButtonSize = ButtonSizes.Large,
     shape: RoundedCornerShape = RoundedCornerShape(CornerRadius.corner8),
     onClick: () -> Unit = {},

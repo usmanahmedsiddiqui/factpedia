@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import com.sample.factpedia.core.designsystem.components.text.FactPediaText
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -15,11 +17,15 @@ fun FactPediaNavigationTopBar(
     actions: (@Composable RowScope.() -> Unit)? = null,
 ) {
     CenterAlignedTopAppBar(
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = Color.Transparent,
+            scrolledContainerColor = Color.Transparent
+        ),
         title = {
             FactPediaText(
                 text = text,
-                textStyle = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.primary
+                textStyle = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         },
         navigationIcon = {

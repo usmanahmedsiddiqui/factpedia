@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -50,6 +51,7 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
                 items(state.searchResults) { item ->
                     FactCard(
                         fact = item,
+                        modifier = Modifier.padding(horizontal = Spacings.spacing16, vertical = Spacings.spacing8),
                         onBookmarkClick = { isBookmarked ->
                             viewModel.onAction(
                                 SearchScreenAction.ToggleBookmark(

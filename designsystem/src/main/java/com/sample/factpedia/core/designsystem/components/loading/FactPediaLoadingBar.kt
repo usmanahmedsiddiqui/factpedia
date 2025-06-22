@@ -1,6 +1,7 @@
 package com.sample.factpedia.core.designsystem.components.loading
 
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
@@ -8,5 +9,8 @@ import androidx.compose.ui.Modifier
 fun FactPediaLoadingBar(
     modifier: Modifier = Modifier
 ) {
-    CircularProgressIndicator(modifier = modifier)
+    CircularProgressIndicator(
+        modifier = modifier,
+        color = MaterialTheme.colorScheme.onPrimary
+    )
 }

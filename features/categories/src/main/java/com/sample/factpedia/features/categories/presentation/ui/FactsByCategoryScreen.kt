@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -66,8 +67,8 @@ fun FactsByCategoryScreen(
             state.facts.isNotEmpty() -> {
                 FactPediaText(
                     text = categoryName,
-                    textStyle = androidx.compose.material3.MaterialTheme.typography.headlineSmall,
-                    color = androidx.compose.material3.MaterialTheme.colorScheme.onBackground,
+                    textStyle = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier.padding(Spacings.spacing16)
                 )
 
@@ -75,6 +76,7 @@ fun FactsByCategoryScreen(
                     items(state.facts) { item ->
                         FactCard(
                             fact = item,
+                            modifier = Modifier.padding(horizontal = Spacings.spacing16, vertical = Spacings.spacing8),
                             onBookmarkClick = { isBookmarked ->
                                 viewModel.onAction(
                                     FactsByCategoryScreenAction.ToggleBookmark(

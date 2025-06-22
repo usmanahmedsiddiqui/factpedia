@@ -21,7 +21,7 @@ fun SettingsScreen() {
         FactPediaText(
             text = "Settings",
             textStyle = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier.padding(Spacings.spacing16)
         )
     }
