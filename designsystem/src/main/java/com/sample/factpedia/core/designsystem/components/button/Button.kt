@@ -25,8 +25,8 @@ fun FactPediaButton(
     text: String,
     modifier: Modifier = Modifier,
     buttonStyle: ButtonStyle = ButtonStyles.Primary,
-    buttonSize: ButtonSize = ButtonSizes.Medium,
-    shape: RoundedCornerShape = RoundedCornerShape(CornerRadius.corner4),
+    buttonSize: ButtonSize = ButtonSizes.Large,
+    shape: RoundedCornerShape = RoundedCornerShape(CornerRadius.corner8),
     onClick: () -> Unit = {},
     @DrawableRes iconRes: Int? = null,
 ) {
