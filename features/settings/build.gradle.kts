@@ -33,4 +33,7 @@ dependencies {
 
     // Kotlin
     implementation(libs.kotlinx.serialization.json)
+
+    implementation(projects.designsystem)
+    implementation(projects.core)
 }

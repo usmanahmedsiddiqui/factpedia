@@ -1,30 +1,22 @@
 package com.sample.factpedia.features.feed.presentation.ui
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bookmark
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.outlined.BookmarkBorder
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sample.factpedia.core.designsystem.components.button.FactPediaButton
+import com.sample.factpedia.core.designsystem.components.error.FactPediaError
+import com.sample.factpedia.core.designsystem.components.loading.FactPediaLoadingBar
+import com.sample.factpedia.core.designsystem.theme.Spacings
+import com.sample.factpedia.core.ui.FactCard
+import com.sample.factpedia.core.util.toUiMessageRes
 import com.sample.factpedia.features.feed.presentation.actions.FeedScreenAction
 import com.sample.factpedia.features.feed.presentation.viewmodel.FeedScreenViewModel
 
@@ -34,64 +26,50 @@ fun FeedScreen(
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle().value
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
         when {
             state.isLoading && state.fact == null -> {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                FactPediaLoadingBar()
             }
 
             state.error != null && state.fact == null -> {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text("Something went wrong")
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Button(onClick = {
-                        viewModel.onAction(FeedScreenAction.Retry)
-                    }) {
-                        Text("Retry")
-                    }
-                }
+                FactPediaError(
+                    text = state.error.toUiMessageRes(LocalContext.current),
+                    onRetry = { viewModel.onAction(FeedScreenAction.Retry) }
+                )
             }
 
             state.fact != null -> {
                 Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp)
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
-                        text = state.fact.fact,
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.weight(1f)
+                    FactCard(
+                        fact = state.fact,
+                        onBookmarkClick = { isBookmarked ->
+                            viewModel.onAction(
+                                FeedScreenAction.ToggleBookmark(
+                                    state.fact.id,
+                                    isBookmarked
+                                )
+                            )
+                        },
+                        onShareClick = {
+                            viewModel.onAction(FeedScreenAction.ShareFact(state.fact))
+                        }
                     )
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        IconButton(onClick = { viewModel.onAction(FeedScreenAction.ToggleBookmark(state.fact.id, !state.fact.isBookmarked)) }) {
-                            Icon(
-                                imageVector = if (state.fact.isBookmarked) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
-                                contentDescription = "Bookmark"
-                            )
-                        }
+                    Spacer(modifier = Modifier.height(Spacings.spacing24))
 
-                        IconButton(onClick = { viewModel.onAction(FeedScreenAction.ShareFact(state.fact)) }) {
-                            Icon(
-                                imageVector = Icons.Default.Share,
-                                contentDescription = "Share"
-                            )
+                    FactPediaButton(
+                        text = "Next Fact",
+                        onClick = {
+                            viewModel.onAction(FeedScreenAction.Refresh)
                         }
-
-                        Button(onClick = { viewModel.onAction(FeedScreenAction.Refresh) }) {
-                            Text("Refresh")
-                        }
-                    }
+                    )
                 }
             }
         }

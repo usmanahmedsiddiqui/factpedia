@@ -1,21 +1,18 @@
 package com.sample.factpedia.features.bookmarks.presentation.ui
 
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BookmarkBorder
-import androidx.compose.material.icons.filled.Bookmarks
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sample.factpedia.core.designsystem.components.text.FactPediaText
+import com.sample.factpedia.core.ui.FactCard
 import com.sample.factpedia.features.bookmarks.presentation.action.BookmarkScreenAction
 import com.sample.factpedia.features.bookmarks.presentation.viewmodel.BookmarkViewModel
 
@@ -25,28 +22,40 @@ fun BookmarkScreen(
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle().value
 
-    when {
-        state.facts.isEmpty() -> {
-            Text("No bookmarks!")
-        }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        when {
+            state.facts.isEmpty() -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    FactPediaText(
+                        text = "No bookmarks found!",
+                        textStyle = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+            }
 
-        else -> {
-            LazyColumn {
-                items(state.facts) { item ->
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                    ) {
-                        Text(text = item.fact, modifier = Modifier.weight(1f))
-                        IconButton(onClick = {
-                            viewModel.onAction(BookmarkScreenAction.ToggleBookmark(item.id, !item.isBookmarked))
-                        }) {
-                            Icon(
-                                imageVector = if (item.isBookmarked) Icons.Default.Bookmarks else Icons.Default.BookmarkBorder,
-                                contentDescription = if (item.isBookmarked) "Remove bookmark" else "Add bookmark"
-                            )
-                        }
+            else -> {
+                LazyColumn {
+                    items(state.facts) { item ->
+                        FactCard(
+                            fact = item,
+                            onBookmarkClick = { isBookmarked ->
+                                viewModel.onAction(
+                                    BookmarkScreenAction.ToggleBookmark(
+                                        item.id,
+                                        isBookmarked
+                                    )
+                                )
+                            },
+                            onShareClick = {}
+                        )
                     }
                 }
             }

@@ -1,23 +1,19 @@
 package com.sample.factpedia.ui
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination.Companion.hasRoute
+import com.sample.factpedia.core.designsystem.components.icon.FactPediaIconButton
+import com.sample.factpedia.core.designsystem.components.text.FactPediaText
+import com.sample.factpedia.core.designsystem.components.topbar.FactPediaNavigationTopBar
+import com.sample.factpedia.core.designsystem.icons.FactPediaIcons
 import com.sample.factpedia.navigation.FactPediaNavHost
-import com.sample.factpedia.navigation.TopLevelDestination
-import com.sample.factpedia.ui.theme.FactPediaAppState
 
 @Composable
 fun FactPediaApp(
@@ -27,19 +23,43 @@ fun FactPediaApp(
     Scaffold(
         modifier = modifier,
         topBar = {
-            val destination = appState.currentTopLevelDestination
-            if (destination != null) {
-                FPTopBar(
-                    destination = destination,
-                    onNavigationClick = { appState.navigateToSearch() },
-                    onActionClick = { appState.navigateToSettings() }
+            val topLevelDestination = appState.currentTopLevelDestination
+            val currentDestinationTitle = appState.getNavigationTitle()
+            if (topLevelDestination != null) {
+                FactPediaNavigationTopBar(
+                    text = topLevelDestination.text,
+                    navigation = {
+                        FactPediaIconButton(
+                            icon = FactPediaIcons.Search,
+                            contentDescription = "Search",
+                            onClick = { appState.navigateToSearch() }
+                        )
+                    },
+                    actions = {
+                        FactPediaIconButton(
+                            icon = FactPediaIcons.Settings,
+                            contentDescription = "Settings",
+                            onClick = { appState.navigateToSettings() }
+                        )
+                    },
+                )
+            } else if (currentDestinationTitle != null) {
+                FactPediaNavigationTopBar(
+                    text = currentDestinationTitle,
+                    navigation = {
+                        FactPediaIconButton(
+                            icon = FactPediaIcons.ArrowBack,
+                            contentDescription = "Back",
+                            onClick = { appState.navigateBack() }
+                        )
+                    },
                 )
             }
         },
         bottomBar = {
-            val destination = appState.currentTopLevelDestination
-            if (destination != null) {
-                FPBottomBar(appState)
+            val topLevelDestination = appState.currentTopLevelDestination
+            if (topLevelDestination != null) {
+                FactPediaBottomBar(appState)
             }
         }
     ) { innerPadding ->
@@ -50,32 +70,8 @@ fun FactPediaApp(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FPTopBar(
-    destination: TopLevelDestination,
-    onNavigationClick: () -> Unit = {},
-    onActionClick: () -> Unit = {},
-) {
-    CenterAlignedTopAppBar(
-        title = {
-            Text(destination.label)
-        },
-        navigationIcon = {
-            IconButton(onClick = onNavigationClick) {
-                Icon(Icons.Default.Search, contentDescription = "Search")
-            }
-        },
-        actions = {
-            IconButton(onClick = onActionClick) {
-                Icon(Icons.Default.Settings, contentDescription = "Settings")
-            }
-        }
-    )
-}
-
-@Composable
-fun FPBottomBar(appState: FactPediaAppState) {
+fun FactPediaBottomBar(appState: FactPediaAppState) {
     NavigationBar {
         appState.topLevelDestinations.forEach { destination ->
             val selected = appState.currentDestination?.hasRoute(destination.route) == true
@@ -87,12 +83,17 @@ fun FPBottomBar(appState: FactPediaAppState) {
                 icon = {
                     Icon(
                         imageVector = if (selected) destination.selectedIcon else destination.unselectedIcon,
-                        contentDescription = destination.label
+                        contentDescription = destination.text
                     )
                 },
-                label = { Text(destination.label) }
+                label = {
+                    FactPediaText(
+                        text = destination.text,
+                        textStyle = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
             )
         }
-
     }
 }

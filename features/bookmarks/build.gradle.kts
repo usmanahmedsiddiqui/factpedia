@@ -45,4 +45,5 @@ dependencies {
 
     implementation(projects.core)
     implementation(projects.database)
+    implementation(projects.designsystem)
 }

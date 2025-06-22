@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
 }
@@ -40,6 +41,12 @@ dependencies {
 
     // Compose
     implementation(libs.compose.ui)
+    implementation(libs.compose.preview)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.icons.extended)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.navigation.compose)
 
     implementation(projects.database)
+    implementation(projects.designsystem)
 }

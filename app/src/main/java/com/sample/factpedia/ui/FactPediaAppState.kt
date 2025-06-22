@@ -1,4 +1,4 @@
-package com.sample.factpedia.ui.theme
+package com.sample.factpedia.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -11,9 +11,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.sample.factpedia.features.bookmarks.presentation.navigation.navigateToBookmark
+import com.sample.factpedia.features.categories.presentation.navigation.FactsByCategoryScreenRoute
 import com.sample.factpedia.features.categories.presentation.navigation.navigateToFactByCategoryScreen
 import com.sample.factpedia.features.feed.presentation.navigation.navigateToFeed
+import com.sample.factpedia.features.search.presentation.navigation.SearchScreenRoute
 import com.sample.factpedia.features.search.presentation.navigation.navigateToSearch
+import com.sample.factpedia.features.settings.presentation.navigation.SettingsScreenRoute
 import com.sample.factpedia.features.settings.presentation.navigation.navigateToSettings
 import com.sample.factpedia.navigation.TopLevelDestination
 
@@ -74,6 +77,17 @@ class FactPediaAppState(
         }
     }
 
+    @Composable
+    fun getNavigationTitle(): String? {
+        return when {
+            currentDestination?.hasRoute(SettingsScreenRoute::class) == true -> "Settings"
+            currentDestination?.hasRoute(SearchScreenRoute::class) == true -> "Search"
+            currentDestination?.hasRoute(FactsByCategoryScreenRoute::class) == true -> "Facts"
+            else -> null
+        }
+    }
+
     fun navigateToSearch() = navController.navigateToSearch()
     fun navigateToSettings() = navController.navigateToSettings()
+    fun navigateBack() = navController.popBackStack()
 }

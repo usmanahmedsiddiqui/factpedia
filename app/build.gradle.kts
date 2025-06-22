@@ -76,4 +76,5 @@ dependencies {
     implementation(projects.features.feed)
     implementation(projects.features.settings)
     implementation(projects.core)
+    implementation(projects.designsystem)
 }
