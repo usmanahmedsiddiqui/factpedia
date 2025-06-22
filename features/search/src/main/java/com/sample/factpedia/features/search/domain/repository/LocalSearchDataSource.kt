@@ -20,5 +20,4 @@ class LocalSearchDataSource @Inject constructor(
                     fact.categoryName.contains(query, ignoreCase = true)
         }
     }
-
 }

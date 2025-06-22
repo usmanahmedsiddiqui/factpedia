@@ -17,7 +17,4 @@ interface CategoryDao {
 
     @Query("DELETE FROM categories WHERE id not in (:categoriesId)")
     suspend fun deleteCategoriesNotIn(categoriesId: List<Int>)
-
-    @Query("DELETE FROM categories")
-    suspend fun clearCategories()
 }

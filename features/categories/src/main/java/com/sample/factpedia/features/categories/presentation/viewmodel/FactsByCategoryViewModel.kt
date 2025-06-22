@@ -4,9 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sample.factpedia.core.common.result.fold
-import com.sample.factpedia.core.domain.usecase.ToggleBookmarkUseCase
-import com.sample.factpedia.features.categories.domain.usecase.GetFactsByCategoryIdUseCase
-import com.sample.factpedia.features.categories.domain.usecase.LoadRemoteFactsByCategoryUseCase
+import com.sample.factpedia.database.usecase.ToggleBookmarkUseCase
+import com.sample.factpedia.features.categories.data.repository.CategoryRepository
 import com.sample.factpedia.features.categories.domain.usecase.SyncFactsByCategoriesUseCase
 import com.sample.factpedia.features.categories.presentation.actions.FactsByCategoryScreenAction
 import com.sample.factpedia.features.categories.presentation.state.FactsByCategoryScreenState
@@ -24,8 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FactsByCategoryViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getFactsByCategoryIdUseCase: GetFactsByCategoryIdUseCase,
-    private val loadRemoteFactsByCategoryUseCase: LoadRemoteFactsByCategoryUseCase,
+    private val categoryRepository: CategoryRepository,
     private val syncFactsByCategoriesUseCase: SyncFactsByCategoriesUseCase,
     private val toggleBookmarkUseCase: ToggleBookmarkUseCase,
 ) : ViewModel() {
@@ -65,7 +63,7 @@ class FactsByCategoryViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            getFactsByCategoryIdUseCase(categoryId)
+            categoryRepository.getFactsByCategoryIdFromLocalDatabase(categoryId)
                 .filter { it.isNotEmpty() }
                 .distinctUntilChanged()
                 .collect { facts ->
@@ -86,7 +84,7 @@ class FactsByCategoryViewModel @Inject constructor(
 
     private fun syncFacts(categoryId: Int) {
         viewModelScope.launch {
-            loadRemoteFactsByCategoryUseCase(categoryId).fold(
+            categoryRepository.loadRemoteFactsByCategoryId(categoryId).fold(
                 onSuccess = { facts ->
                     /**
                      * When receive successful response from server sync it with

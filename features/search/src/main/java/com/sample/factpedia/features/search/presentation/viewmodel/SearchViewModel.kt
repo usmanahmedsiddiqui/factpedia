@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sample.factpedia.core.common.result.Response
 import com.sample.factpedia.core.common.result.fold
-import com.sample.factpedia.core.domain.usecase.ToggleBookmarkUseCase
+import com.sample.factpedia.database.usecase.ToggleBookmarkUseCase
 import com.sample.factpedia.features.search.domain.usecase.SearchFactsUseCase
 import com.sample.factpedia.features.search.presentation.action.SearchScreenAction
 import com.sample.factpedia.features.search.presentation.state.SearchScreenState
@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onStart

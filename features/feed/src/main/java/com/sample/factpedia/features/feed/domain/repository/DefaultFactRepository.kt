@@ -10,6 +10,7 @@ import com.sample.factpedia.database.dao.FactDao
 import com.sample.factpedia.features.feed.data.repository.FactDataSource
 import com.sample.factpedia.features.feed.data.repository.FactRepository
 import com.sample.factpedia.features.feed.di.FactLocalDataSource
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 class DefaultFactRepository @Inject constructor(
@@ -31,6 +32,7 @@ class DefaultFactRepository @Inject constructor(
     }
 
     override suspend fun loadRemoteFacts(limit: Int): Response<List<Fact>, DataError> {
+        delay(5000)
         return handleError {
             factDataSource.getFacts(limit).map { it.asDomainModel() }
         }

@@ -3,8 +3,7 @@ package com.sample.factpedia.features.categories.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sample.factpedia.core.common.result.fold
-import com.sample.factpedia.features.categories.domain.usecase.GetCategoriesUseCase
-import com.sample.factpedia.features.categories.domain.usecase.LoadRemoteCategoriesUseCase
+import com.sample.factpedia.features.categories.data.repository.CategoryRepository
 import com.sample.factpedia.features.categories.domain.usecase.SyncCategoriesUseCase
 import com.sample.factpedia.features.categories.presentation.actions.CategoryScreenAction
 import com.sample.factpedia.features.categories.presentation.state.CategoryScreenState
@@ -21,8 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoriesViewModel @Inject constructor(
-    private val getCategoriesUseCase: GetCategoriesUseCase,
-    private val loadRemoteCategoriesUseCase: LoadRemoteCategoriesUseCase,
+    private val categoryRepository: CategoryRepository,
     private val syncCategoriesUseCase: SyncCategoriesUseCase,
 ) : ViewModel() {
     private val _state = MutableStateFlow(CategoryScreenState())
@@ -62,7 +60,7 @@ class CategoriesViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            getCategoriesUseCase()
+            categoryRepository.getCategoriesFromLocalDatabase()
                 .filter { it.isNotEmpty() }
                 .distinctUntilChanged()
                 .collect { categories ->
@@ -83,7 +81,7 @@ class CategoriesViewModel @Inject constructor(
 
     private fun syncCategories() {
         viewModelScope.launch {
-            loadRemoteCategoriesUseCase().fold(
+            categoryRepository.loadRemoteCategories().fold(
                 onSuccess = { categories ->
                     /**
                      * When receive successful response from server sync it with

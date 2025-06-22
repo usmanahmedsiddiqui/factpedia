@@ -15,6 +15,7 @@ import com.sample.factpedia.features.categories.data.repository.CategoryDataSour
 import com.sample.factpedia.features.categories.data.repository.CategoryRepository
 import com.sample.factpedia.features.categories.di.CategoryLocalDataSource
 import com.sample.factpedia.features.categories.domain.model.Category
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -30,12 +31,14 @@ class DefaultCategoryRepository @Inject constructor(
     override fun getCategoriesFromLocalDatabase(): Flow<List<Category>> =
         categoryDao.getAllCategories().map { list -> list.map(CategoryEntity::asDomainModel) }
 
-    override suspend fun loadRemoteCategories(): Response<List<Category>, DataError> =
-        handleError {
+    override suspend fun loadRemoteCategories(): Response<List<Category>, DataError> {
+        delay(5000)
+        return handleError {
             categoryDataSource.getCategories().map(CategoryApiModel::asDomainModel)
         }
+    }
 
-    override suspend fun getFactsByCategoryId(categoryId: Int): Flow<List<Fact>> =
+    override fun getFactsByCategoryIdFromLocalDatabase(categoryId: Int): Flow<List<Fact>> =
         combine(
             factDao.getFactsByCategoryId(categoryId),
             bookmarkDao.getAllBookmarks()
@@ -45,6 +48,7 @@ class DefaultCategoryRepository @Inject constructor(
         }
 
     override suspend fun loadRemoteFactsByCategoryId(categoryId: Int): Response<List<Fact>, DataError> {
+        delay(5000)
         return handleError {
             categoryDataSource.getFactsByCategoryId(categoryId).map { it.asDomainModel() }
         }

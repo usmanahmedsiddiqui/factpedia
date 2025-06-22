@@ -27,38 +27,7 @@ fun FactPediaApp(
             containerColor = Color.Transparent,
             modifier = modifier,
             topBar = {
-                val topLevelDestination = appState.currentTopLevelDestination
-                val currentDestinationTitle = appState.getNavigationTitle()
-                if (topLevelDestination != null) {
-                    FactPediaNavigationTopBar(
-                        text = topLevelDestination.text,
-                        navigation = {
-                            FactPediaIconButton(
-                                icon = FactPediaIcons.Search,
-                                contentDescription = "Search",
-                                onClick = { appState.navigateToSearch() }
-                            )
-                        },
-                        actions = {
-                            FactPediaIconButton(
-                                icon = FactPediaIcons.Settings,
-                                contentDescription = "Settings",
-                                onClick = { appState.navigateToSettings() }
-                            )
-                        },
-                    )
-                } else if (currentDestinationTitle != null) {
-                    FactPediaNavigationTopBar(
-                        text = currentDestinationTitle,
-                        navigation = {
-                            FactPediaIconButton(
-                                icon = FactPediaIcons.ArrowBack,
-                                contentDescription = "Back",
-                                onClick = { appState.navigateBack() }
-                            )
-                        },
-                    )
-                }
+                FactPediaTopBar(appState)
             },
             bottomBar = {
                 val topLevelDestination = appState.currentTopLevelDestination
@@ -75,6 +44,42 @@ fun FactPediaApp(
     }
 
 
+}
+
+@Composable
+fun FactPediaTopBar(appState: FactPediaAppState) {
+    val topLevelDestination = appState.currentTopLevelDestination
+    val currentDestinationTitle = appState.getNavigationTitle()
+    if (topLevelDestination != null) {
+        FactPediaNavigationTopBar(
+            text = topLevelDestination.text,
+            navigation = {
+                FactPediaIconButton(
+                    icon = FactPediaIcons.Search,
+                    contentDescription = "Search",
+                    onClick = { appState.navigateToSearch() }
+                )
+            },
+            actions = {
+                FactPediaIconButton(
+                    icon = FactPediaIcons.Settings,
+                    contentDescription = "Settings",
+                    onClick = { appState.navigateToSettings() }
+                )
+            },
+        )
+    } else if (currentDestinationTitle != null) {
+        FactPediaNavigationTopBar(
+            text = currentDestinationTitle,
+            navigation = {
+                FactPediaIconButton(
+                    icon = FactPediaIcons.ArrowBack,
+                    contentDescription = "Back",
+                    onClick = { appState.navigateBack() }
+                )
+            },
+        )
+    }
 }
 
 @Composable

@@ -21,7 +21,4 @@ interface BookmarkDao {
 
     @Query("SELECT EXISTS(SELECT 1 FROM bookmarks WHERE factId = :factId)")
     suspend fun isBookmarked(factId: Int): Boolean
-
-    @Query("SELECT factId FROM bookmarks")
-    suspend fun getAllBookmarkedFactIds(): List<Int>
 }

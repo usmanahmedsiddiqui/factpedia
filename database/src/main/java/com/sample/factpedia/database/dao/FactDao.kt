@@ -18,17 +18,11 @@ interface FactDao {
     @Query("SELECT * FROM facts WHERE categoryId = :categoryId ORDER BY fact ASC")
     fun getFactsByCategoryId(categoryId: Int): Flow<List<FactEntity>>
 
-    @Query("SELECT * FROM facts ORDER BY fact ASC LIMIT 1 OFFSET :position")
-    suspend fun getFactByOffset(position: Int): FactEntity?
-
     @Upsert
     suspend fun upsertFacts(facts: List<FactEntity>)
 
     @Query("DELETE FROM facts WHERE categoryId = :categoryId and id not in (:factId)")
     suspend fun deleteFactsNotInCategory(categoryId: Int, factId: List<Int>)
-
-    @Query("DELETE FROM facts")
-    suspend fun clearFacts()
 
     @Query(" SELECT * FROM facts WHERE id in (SELECT factId FROM bookmarks) order by fact ASC")
     fun getBookmarkedFacts(): Flow<List<FactEntity>>

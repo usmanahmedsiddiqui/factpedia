@@ -1,4 +1,4 @@
-package com.sample.factpedia.core.domain.usecase
+package com.sample.factpedia.database.usecase
 
 import com.sample.factpedia.database.dao.BookmarkDao
 import com.sample.factpedia.database.model.BookmarkEntity
