@@ -49,12 +49,7 @@ dependencies {
     implementation(libs.compose.preview)
     implementation(libs.compose.material3)
     implementation(libs.androidx.activity.compose)
-    implementation(libs.compose.icons.extended)
     debugImplementation(libs.compose.tooling)
-
-    // ViewModel + Lifecycle
-    implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.viewmodel.compose)
 
     // Navigation
     implementation(libs.navigation.compose)
@@ -63,18 +58,15 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
-    // Coroutines
-    implementation(libs.coroutines.android)
-
     // Kotlin
-    implementation(libs.androidx.core.ktx)
     implementation(libs.kotlinx.serialization.json)
 
-    implementation(projects.features.categories)
-    implementation(projects.features.search)
-    implementation(projects.features.bookmarks)
-    implementation(projects.features.feed)
-    implementation(projects.features.settings)
     implementation(projects.core)
     implementation(projects.designsystem)
+
+    implementation(projects.features.bookmarks)
+    implementation(projects.features.categories)
+    implementation(projects.features.feed)
+    implementation(projects.features.search)
+    implementation(projects.features.settings)
 }
