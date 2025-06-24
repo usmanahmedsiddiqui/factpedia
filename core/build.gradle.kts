@@ -1,51 +1,16 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.setup.base.module)
+    alias(libs.plugins.setup.compose)
+    alias(libs.plugins.setup.hilt)
+    alias(libs.plugins.setup.serialization)
+    alias(libs.plugins.setup.retrofit)
 }
 
 android {
     namespace = "com.sample.factpedia.core"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
 }
 
 dependencies {
-    // Dependency Injection
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-
-    // Retrofit
-    implementation(libs.retrofit2)
-    implementation(libs.retrofit2.gsonconverter)
-    implementation(libs.gson)
-    implementation(libs.okhttp3)
-    implementation(libs.okhttp3.logginginterceptor)
-
-    // Kotlin
-    implementation(libs.kotlinx.serialization.json)
-
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.preview)
-    implementation(libs.compose.material3)
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.navigation.compose)
-
     implementation(projects.database)
     implementation(projects.designsystem)
 }

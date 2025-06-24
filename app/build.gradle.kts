@@ -1,67 +1,16 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.setup.application.module)
+    alias(libs.plugins.setup.compose)
+    alias(libs.plugins.setup.hilt)
+    alias(libs.plugins.setup.serialization)
+    alias(libs.plugins.setup.navigation)
 }
 
 android {
     namespace = "com.sample.factpedia"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-
-    defaultConfig {
-        applicationId = "com.sample.factpedia"
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-    buildFeatures {
-        compose = true
-    }
 }
 
 dependencies {
-
-    // Compose
-    implementation(libs.compose.ui)
-    implementation(libs.compose.preview)
-    implementation(libs.compose.material3)
-    implementation(libs.androidx.activity.compose)
-    debugImplementation(libs.compose.tooling)
-
-    // Navigation
-    implementation(libs.navigation.compose)
-    implementation(libs.hilt.navigation.compose)
-
-    // Dependency Injection
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-
-    // Kotlin
-    implementation(libs.kotlinx.serialization.json)
-
     implementation(projects.core)
     implementation(projects.designsystem)
     implementation(projects.datastore)
