@@ -20,9 +20,10 @@ import com.sample.factpedia.navigation.FactPediaNavHost
 @Composable
 fun FactPediaApp(
     appState: FactPediaAppState,
-    modifier: Modifier = Modifier
+    isDark: Boolean,
+    modifier: Modifier = Modifier,
 ) {
-    FactPediaGradientBackground {
+    FactPediaGradientBackground(isDark = isDark) {
         Scaffold(
             containerColor = Color.Transparent,
             modifier = modifier,
@@ -42,8 +43,6 @@ fun FactPediaApp(
             )
         }
     }
-
-
 }
 
 @Composable

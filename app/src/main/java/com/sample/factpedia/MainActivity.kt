@@ -4,7 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sample.factpedia.core.designsystem.theme.FactPediaTheme
+import com.sample.factpedia.datastore.ThemePreference
 import com.sample.factpedia.ui.FactPediaApp
 import com.sample.factpedia.ui.rememberFactPediaAppState
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,9 +19,18 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+
+            val viewModel: MainActivityViewModel = hiltViewModel()
             val appState = rememberFactPediaAppState()
-            FactPediaTheme {
-                FactPediaApp(appState)
+            val themePreference = viewModel.state.collectAsStateWithLifecycle().value
+            val isDarkTheme = when (themePreference) {
+                ThemePreference.LIGHT -> false
+                ThemePreference.DARK -> true
+                ThemePreference.SYSTEM -> isSystemInDarkTheme()
+            }
+
+            FactPediaTheme(darkTheme = isDarkTheme) {
+                FactPediaApp(appState, isDarkTheme)
             }
         }
     }

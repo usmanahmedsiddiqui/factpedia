@@ -53,6 +53,7 @@ dependencies {
 
     // Navigation
     implementation(libs.navigation.compose)
+    implementation(libs.hilt.navigation.compose)
 
     // Dependency Injection
     implementation(libs.hilt.android)
@@ -63,6 +64,7 @@ dependencies {
 
     implementation(projects.core)
     implementation(projects.designsystem)
+    implementation(projects.datastore)
 
     implementation(projects.features.bookmarks)
     implementation(projects.features.categories)

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -45,14 +46,25 @@ fun FactPediaTheme(
 @Composable
 fun FactPediaGradientBackground(
     modifier: Modifier = Modifier,
+    isDark: Boolean,
     content: @Composable () -> Unit
 ) {
-    val gradientColors = listOf(
-        Color(0xFFFAF1F2),
-        Color(0xFFFBF2F5),
-        Color(0xFFFAF1F2),
-        Color(0xFFFEE7FB)
-    )
+    val gradientColors = if (isDark) {
+        listOf(
+            GradientLight1,
+            GradientLight2,
+            GradientLight3,
+            GradientLight4,
+        )
+    } else {
+        listOf(
+            GradientDark1,
+            GradientDark2,
+            GradientDark3,
+            GradientDark4,
+        )
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()

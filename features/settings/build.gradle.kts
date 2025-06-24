@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -23,6 +25,10 @@ android {
 }
 
 dependencies {
+    // Dependency Injection
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+
     // Compose (convert into plugin later)
     implementation(libs.compose.ui)
     implementation(libs.compose.preview)
@@ -33,6 +39,10 @@ dependencies {
     // Kotlin
     implementation(libs.kotlinx.serialization.json)
 
+    // Navigation
+    implementation(libs.hilt.navigation.compose)
+
     implementation(projects.designsystem)
     implementation(projects.core)
+    implementation(projects.datastore)
 }

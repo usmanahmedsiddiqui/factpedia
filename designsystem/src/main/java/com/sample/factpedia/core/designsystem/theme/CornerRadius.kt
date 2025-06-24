@@ -7,4 +7,5 @@ object CornerRadius {
     val corner4 = 4.dp
     val corner8 = 8.dp
     val corner16 = 16.dp
+    val corner32 = 32.dp
 }

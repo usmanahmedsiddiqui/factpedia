@@ -34,7 +34,7 @@ object TagStyles {
 }
 
 private fun createTextStyle(color: Color) = TextStyle(
-    fontWeight = FontWeight.Medium,
+    fontWeight = FontWeight.Bold,
     fontSize = 12.sp,
     letterSpacing = 0.03.em,
     color = color,
