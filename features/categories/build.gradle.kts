@@ -13,7 +13,10 @@ android {
 }
 
 dependencies {
-    implementation(projects.core)
-    implementation(projects.database)
-    implementation(projects.designsystem)
+    implementation(projects.core.network)
+    implementation(projects.core.common)
+    implementation(projects.core.model)
+    implementation(projects.core.ui)
+    implementation(projects.core.database)
+    implementation(projects.core.designsystem)
 }

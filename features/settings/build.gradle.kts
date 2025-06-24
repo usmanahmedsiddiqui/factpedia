@@ -11,7 +11,6 @@ android {
 }
 
 dependencies {
-    implementation(projects.designsystem)
-    implementation(projects.core)
-    implementation(projects.datastore)
+    implementation(projects.core.designsystem)
+    implementation(projects.core.datastore)
 }

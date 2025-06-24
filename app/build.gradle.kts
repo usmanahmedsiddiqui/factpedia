@@ -11,9 +11,8 @@ android {
 }
 
 dependencies {
-    implementation(projects.core)
-    implementation(projects.designsystem)
-    implementation(projects.datastore)
+    implementation(projects.core.designsystem)
+    implementation(projects.core.datastore)
 
     implementation(projects.features.bookmarks)
     implementation(projects.features.categories)

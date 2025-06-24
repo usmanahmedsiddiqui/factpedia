@@ -18,6 +18,7 @@ kotlinxSerializationJson = "1.8.0"
 room = "2.7.2"
 datastore = "1.0.0"
 pluginVersion = "1.0.0"
+coroutines = "1.10.2"
 
 [libraries]
 
@@ -58,6 +59,9 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 datastore-preferences-core = { group = "androidx.datastore", name = "datastore", version.ref = "datastore" }
 
+# Coroutines
+coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+
 # Gradle
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }
@@ -76,6 +80,7 @@ setup-application-module = { id = "com.sample.factpedia.plugin.setup-application
 setup-base-module = { id = "com.sample.factpedia.plugin.setup-base-module", version.ref = "pluginVersion" }
 setup-compose = { id = "com.sample.factpedia.plugin.setup-compose", version.ref = "pluginVersion" }
 setup-datastore = { id = "com.sample.factpedia.plugin.setup-datastore", version.ref = "pluginVersion" }
+setup-coroutine = { id = "com.sample.factpedia.plugin.setup-coroutine", version.ref = "pluginVersion" }
 setup-hilt = { id = "com.sample.factpedia.plugin.setup-hilt", version.ref = "pluginVersion" }
 setup-navigation = { id = "com.sample.factpedia.plugin.setup-navigation", version.ref = "pluginVersion" }
 setup-retrofit = { id = "com.sample.factpedia.plugin.setup-retrofit", version.ref = "pluginVersion" }

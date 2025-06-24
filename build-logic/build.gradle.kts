@@ -29,6 +29,11 @@ gradlePlugin {
             implementationClass = "com.sample.factpedia.buildlogic.DataStorePlugin"
         }
 
+        register("setup-coroutine") {
+            id = "com.sample.factpedia.plugin.setup-coroutine"
+            implementationClass = "com.sample.factpedia.buildlogic.CoroutinePlugin"
+        }
+
         register("setup-hilt") {
             id = "com.sample.factpedia.plugin.setup-hilt"
             implementationClass = "com.sample.factpedia.buildlogic.HiltPlugin"

@@ -15,11 +15,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sample.factpedia.core.common.utils.toUiMessageRes
 import com.sample.factpedia.core.designsystem.components.error.FactPediaError
 import com.sample.factpedia.core.designsystem.components.loading.FactPediaLoadingBar
 import com.sample.factpedia.core.designsystem.components.text.FactPediaText
 import com.sample.factpedia.core.designsystem.theme.Spacings
-import com.sample.factpedia.core.util.toUiMessageRes
 import com.sample.factpedia.features.categories.domain.model.Category
 import com.sample.factpedia.features.categories.presentation.actions.CategoryScreenAction
 import com.sample.factpedia.features.categories.presentation.viewmodel.CategoriesViewModel

@@ -1,6 +1,6 @@
 package com.sample.factpedia.features.categories.data.api
 
-import com.sample.factpedia.core.data.model.FactApiModel
+import com.sample.factpedia.core.model.data.FactApiModel
 import com.sample.factpedia.features.categories.data.model.CategoryApiModel
 import retrofit2.http.GET
 import retrofit2.http.Path

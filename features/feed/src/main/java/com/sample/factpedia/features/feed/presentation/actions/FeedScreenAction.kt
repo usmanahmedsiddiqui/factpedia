@@ -1,6 +1,6 @@
 package com.sample.factpedia.features.feed.presentation.actions
 
-import com.sample.factpedia.core.domain.model.Fact
+import com.sample.factpedia.core.model.domain.Fact
 
 sealed class FeedScreenAction {
     data object Retry : FeedScreenAction()

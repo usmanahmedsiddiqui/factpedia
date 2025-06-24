@@ -1,8 +1,8 @@
 package com.sample.factpedia.features.categories.domain.repository
 
 import android.content.Context
-import com.sample.factpedia.core.data.model.FactApiModel
-import com.sample.factpedia.core.util.readAssetFile
+import com.sample.factpedia.core.common.utils.readAssetFile
+import com.sample.factpedia.core.model.data.FactApiModel
 import com.sample.factpedia.features.categories.data.model.CategoryApiModel
 import com.sample.factpedia.features.categories.data.repository.CategoryDataSource
 import kotlinx.serialization.json.Json

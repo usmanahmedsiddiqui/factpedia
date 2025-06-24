@@ -1,6 +1,6 @@
 package com.sample.factpedia.features.feed.domain.repository
 
-import com.sample.factpedia.core.data.model.FactApiModel
+import com.sample.factpedia.core.model.data.FactApiModel
 import com.sample.factpedia.features.feed.data.api.FactsApi
 import com.sample.factpedia.features.feed.data.repository.FactDataSource
 import javax.inject.Inject

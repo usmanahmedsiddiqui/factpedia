@@ -1,6 +1,6 @@
 package com.sample.factpedia.features.categories.domain.repository
 
-import com.sample.factpedia.core.data.model.FactApiModel
+import com.sample.factpedia.core.model.data.FactApiModel
 import com.sample.factpedia.features.categories.data.api.CategoryApi
 import com.sample.factpedia.features.categories.data.model.CategoryApiModel
 import com.sample.factpedia.features.categories.data.repository.CategoryDataSource

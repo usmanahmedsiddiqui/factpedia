@@ -3,12 +3,13 @@ package com.sample.factpedia.features.categories.domain.repository
 import com.sample.factpedia.core.common.result.DataError
 import com.sample.factpedia.core.common.result.Response
 import com.sample.factpedia.core.common.result.handleError
-import com.sample.factpedia.core.data.model.asDomainModel
-import com.sample.factpedia.core.domain.model.Fact
+import com.sample.factpedia.core.model.data.asDomainModel
+import com.sample.factpedia.core.model.domain.Fact
 import com.sample.factpedia.database.dao.BookmarkDao
 import com.sample.factpedia.database.dao.CategoryDao
 import com.sample.factpedia.database.dao.FactDao
 import com.sample.factpedia.database.model.CategoryEntity
+import com.sample.factpedia.database.model.asDomainModel
 import com.sample.factpedia.features.categories.data.model.CategoryApiModel
 import com.sample.factpedia.features.categories.data.model.asDomainModel
 import com.sample.factpedia.features.categories.data.repository.CategoryDataSource

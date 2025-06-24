@@ -1,6 +1,6 @@
 package com.sample.factpedia.features.search.domain.repository
 
-import com.sample.factpedia.core.data.model.FactApiModel
+import com.sample.factpedia.core.model.data.FactApiModel
 import com.sample.factpedia.features.search.data.api.SearchApi
 import com.sample.factpedia.features.search.data.repository.SearchDataSource
 import javax.inject.Inject

@@ -1,8 +1,8 @@
 package com.sample.factpedia.features.bookmarks.domain.repository
 
-import com.sample.factpedia.core.data.model.asDomainModel
-import com.sample.factpedia.core.domain.model.Fact
+import com.sample.factpedia.core.model.domain.Fact
 import com.sample.factpedia.database.dao.FactDao
+import com.sample.factpedia.database.model.asDomainModel
 import com.sample.factpedia.features.bookmarks.data.repository.BookmarkRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

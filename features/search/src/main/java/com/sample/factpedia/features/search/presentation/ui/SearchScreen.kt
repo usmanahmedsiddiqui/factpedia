@@ -12,11 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sample.factpedia.core.common.utils.toUiMessageRes
 import com.sample.factpedia.core.designsystem.components.error.FactPediaErrorText
 import com.sample.factpedia.core.designsystem.components.search.FactPediaSearchBar
 import com.sample.factpedia.core.designsystem.theme.Spacings
 import com.sample.factpedia.core.ui.FactCard
-import com.sample.factpedia.core.util.toUiMessageRes
 import com.sample.factpedia.features.search.presentation.action.SearchScreenAction
 import com.sample.factpedia.features.search.presentation.viewmodel.SearchViewModel
 

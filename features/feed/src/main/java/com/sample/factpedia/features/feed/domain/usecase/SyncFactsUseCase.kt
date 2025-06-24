@@ -1,8 +1,8 @@
 package com.sample.factpedia.features.feed.domain.usecase
 
-import com.sample.factpedia.core.data.model.asEntity
-import com.sample.factpedia.core.domain.model.Fact
+import com.sample.factpedia.core.model.domain.Fact
 import com.sample.factpedia.database.dao.FactDao
+import com.sample.factpedia.database.model.asEntity
 import javax.inject.Inject
 
 class SyncFactsUseCase @Inject constructor(
