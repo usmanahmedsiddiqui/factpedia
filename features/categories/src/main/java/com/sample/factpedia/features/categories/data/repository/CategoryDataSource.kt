@@ -5,5 +5,4 @@ import com.sample.factpedia.features.categories.data.model.CategoryApiModel
 
 interface CategoryDataSource {
     suspend fun getCategories(): List<CategoryApiModel>
-    suspend fun getFactsByCategoryId(categoryId: Int): List<FactApiModel>
 }

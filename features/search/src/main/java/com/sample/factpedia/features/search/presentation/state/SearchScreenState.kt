@@ -1,10 +1,10 @@
 package com.sample.factpedia.features.search.presentation.state
 
 import com.sample.factpedia.core.common.result.DataError
-import com.sample.factpedia.core.model.domain.Fact
+import com.sample.factpedia.core.model.domain.BookmarkedFact
 
 data class SearchScreenState(
     val query: String = "",
     val error: DataError? = null,
-    val searchResults: List<Fact> = emptyList()
+    val searchResults: List<BookmarkedFact> = emptyList()
 )

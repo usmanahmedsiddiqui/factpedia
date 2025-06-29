@@ -20,11 +20,11 @@ import com.sample.factpedia.core.designsystem.components.icon.FactPediaIconButto
 import com.sample.factpedia.core.designsystem.components.tag.Tag
 import com.sample.factpedia.core.designsystem.icons.FactPediaIcons
 import com.sample.factpedia.core.designsystem.theme.Spacings
-import com.sample.factpedia.core.model.domain.Fact
+import com.sample.factpedia.core.model.domain.BookmarkedFact
 
 @Composable
 fun FactCard(
-    fact: Fact,
+    fact: BookmarkedFact,
     onBookmarkClick: (Boolean) -> Unit,
     onShareClick: () -> Unit,
     modifier: Modifier = Modifier

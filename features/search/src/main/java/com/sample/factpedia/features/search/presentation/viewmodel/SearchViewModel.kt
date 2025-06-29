@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sample.factpedia.core.common.result.Response
 import com.sample.factpedia.core.common.result.fold
-import com.sample.factpedia.database.usecase.ToggleBookmarkUseCase
+import com.sample.factpedia.core.domain.ToggleBookmarkUseCase
 import com.sample.factpedia.features.search.domain.usecase.SearchFactsUseCase
 import com.sample.factpedia.features.search.presentation.action.SearchScreenAction
 import com.sample.factpedia.features.search.presentation.state.SearchScreenState

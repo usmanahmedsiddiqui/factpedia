@@ -1,7 +1,7 @@
 package com.sample.factpedia.features.bookmarks.presentation.state
 
-import com.sample.factpedia.core.model.domain.Fact
+import com.sample.factpedia.core.model.domain.BookmarkedFact
 
 data class BookmarkScreenState(
-    val facts: List<Fact> = emptyList(),
+    val facts: List<BookmarkedFact> = emptyList(),
 )

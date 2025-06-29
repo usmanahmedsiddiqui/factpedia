@@ -58,5 +58,10 @@ gradlePlugin {
             id = "com.sample.factpedia.plugin.setup-serialization"
             implementationClass = "com.sample.factpedia.buildlogic.SerializationPlugin"
         }
+
+        register("setup-junit-testing") {
+            id = "com.sample.factpedia.plugin.setup-junit-testing"
+            implementationClass = "com.sample.factpedia.buildlogic.JUnitTestPlugin"
+        }
     }
 }

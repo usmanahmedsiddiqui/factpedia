@@ -105,10 +105,3 @@ class CategoriesViewModel @Inject constructor(
         }
     }
 }
-
-/**
- * get loading
- * load 10 facts
- * show 10 facts in viewmodel
- * show 1 fact
- */

@@ -24,6 +24,13 @@ fun FactEntity.asDomainModel(isBookmarked: Boolean) = Fact(
     isBookmarked = isBookmarked,
 )
 
+fun FactEntity.asDomainModel() = Fact(
+    id = this.id,
+    fact = this.fact,
+    categoryName = this.categoryName,
+    categoryId = this.categoryId,
+)
+
 fun Fact.asEntity() = FactEntity(
     id = this.id,
     fact = this.fact,

@@ -45,12 +45,9 @@ fun BookmarkScreen(
                         FactCard(
                             fact = item,
                             modifier = Modifier.padding(horizontal = Spacings.spacing16, vertical = Spacings.spacing8),
-                            onBookmarkClick = { isBookmarked ->
+                            onBookmarkClick = { _ ->
                                 viewModel.onAction(
-                                    BookmarkScreenAction.ToggleBookmark(
-                                        item.id,
-                                        isBookmarked
-                                    )
+                                    BookmarkScreenAction.RemoveBookmark(item.id,)
                                 )
                             },
                             onShareClick = {}

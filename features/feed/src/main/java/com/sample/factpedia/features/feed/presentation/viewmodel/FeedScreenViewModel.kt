@@ -3,11 +3,11 @@ package com.sample.factpedia.features.feed.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sample.factpedia.core.common.result.fold
-import com.sample.factpedia.database.usecase.ObserveBookmarkStatusUseCase
-import com.sample.factpedia.database.usecase.ToggleBookmarkUseCase
-import com.sample.factpedia.features.feed.data.repository.FactRepository
+import com.sample.factpedia.core.data.repository.FactsRepository
+import com.sample.factpedia.core.domain.ObserveBookmarkStatusUseCase
+import com.sample.factpedia.core.domain.ToggleBookmarkUseCase
+import com.sample.factpedia.features.feed.data.repository.FeedRepository
 import com.sample.factpedia.features.feed.domain.usecase.ShouldPrefetchUseCase
-import com.sample.factpedia.features.feed.domain.usecase.SyncFactsUseCase
 import com.sample.factpedia.features.feed.presentation.actions.FeedScreenAction
 import com.sample.factpedia.features.feed.presentation.state.FeedScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,8 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FeedScreenViewModel @Inject constructor(
-    private val factRepository: FactRepository,
-    private val syncFactsUseCase: SyncFactsUseCase,
+    private val feedRepository: FeedRepository,
+    private val factsRepository: FactsRepository,
     private val toggleBookmarkUseCase: ToggleBookmarkUseCase,
     private val observeBookmarkStatusUseCase: ObserveBookmarkStatusUseCase,
     private val shouldPrefetchUseCase: ShouldPrefetchUseCase,
@@ -57,8 +57,8 @@ class FeedScreenViewModel @Inject constructor(
 
     private fun prefetchFactsInBackground() {
         viewModelScope.launch {
-            factRepository.loadRemoteFacts(LIMIT).fold(
-                onSuccess = { syncFactsUseCase(it) },
+            feedRepository.loadRemoteFacts(LIMIT).fold(
+                onSuccess = { factsRepository.upsertFacts(it) },
                 onFailure = {}
             )
         }
@@ -68,7 +68,7 @@ class FeedScreenViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true, error = null) }
         viewModelScope.launch {
             val currentFact = state.value.fact
-            val fact = factRepository.getRandomFact(currentFact?.id)
+            val fact = feedRepository.getRandomFact(currentFact?.id)
             if (fact != null) {
                 _state.update { it.copy(fact = fact, isLoading = false) }
                 observeBookmarkStatus(fact.id)
@@ -80,9 +80,9 @@ class FeedScreenViewModel @Inject constructor(
 
     private fun fetchRemoteFacts() {
         viewModelScope.launch {
-            factRepository.loadRemoteFacts(LIMIT).fold(
+            feedRepository.loadRemoteFacts(LIMIT).fold(
                 onSuccess = { facts ->
-                    syncFactsUseCase(facts)
+                    factsRepository.upsertFacts(facts)
                     loadFact()
                 },
                 onFailure = { error ->

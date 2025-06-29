@@ -2,8 +2,7 @@ package com.sample.factpedia.features.bookmarks.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sample.factpedia.database.usecase.ToggleBookmarkUseCase
-import com.sample.factpedia.features.bookmarks.data.repository.BookmarkRepository
+import com.sample.factpedia.features.bookmarks.data.repository.BookmarkedFactsRepository
 import com.sample.factpedia.features.bookmarks.presentation.action.BookmarkScreenAction
 import com.sample.factpedia.features.bookmarks.presentation.state.BookmarkScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,8 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BookmarkViewModel @Inject constructor(
-    private val bookmarkRepository: BookmarkRepository,
-    private val toggleBookmarkUseCase: ToggleBookmarkUseCase,
+    private val bookmarkedFactsRepository: BookmarkedFactsRepository,
 ) : ViewModel() {
     private val _state = MutableStateFlow(BookmarkScreenState())
     val state = _state
@@ -33,19 +31,19 @@ class BookmarkViewModel @Inject constructor(
 
     fun onAction(action: BookmarkScreenAction) {
         when(action) {
-            is BookmarkScreenAction.ToggleBookmark -> toggleBookmark(action.factId, action.isBookmarked)
+            is BookmarkScreenAction.RemoveBookmark -> removeBookmark(factId = action.factId)
         }
     }
 
-    private fun toggleBookmark(factId: Int, isBookmarked: Boolean) {
+    private fun removeBookmark(factId: Int) {
         viewModelScope.launch {
-            toggleBookmarkUseCase(factId, isBookmarked)
+            bookmarkedFactsRepository.removeBookmark(factId)
         }
     }
 
     private fun observeBookmarks() {
         viewModelScope.launch {
-            bookmarkRepository.getBookmarkedFacts()
+            bookmarkedFactsRepository.getBookmarkedFacts()
                 .collect { facts ->
                     _state.update { currentState ->
                         currentState.copy(

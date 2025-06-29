@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sample.factpedia.core.common.result.fold
-import com.sample.factpedia.database.usecase.ToggleBookmarkUseCase
-import com.sample.factpedia.features.categories.data.repository.CategoryRepository
+import com.sample.factpedia.core.domain.ToggleBookmarkUseCase
+import com.sample.factpedia.features.categories.data.repository.FactsByCategoryRepository
 import com.sample.factpedia.features.categories.domain.usecase.SyncFactsByCategoriesUseCase
 import com.sample.factpedia.features.categories.presentation.actions.FactsByCategoryScreenAction
 import com.sample.factpedia.features.categories.presentation.state.FactsByCategoryScreenState
@@ -23,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FactsByCategoryViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val categoryRepository: CategoryRepository,
+    private val factsByCategoryRepository: FactsByCategoryRepository,
     private val syncFactsByCategoriesUseCase: SyncFactsByCategoriesUseCase,
     private val toggleBookmarkUseCase: ToggleBookmarkUseCase,
 ) : ViewModel() {
@@ -63,7 +63,7 @@ class FactsByCategoryViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            categoryRepository.getFactsByCategoryIdFromLocalDatabase(categoryId)
+            factsByCategoryRepository.getFactsByCategoryIdFromLocalDatabase(categoryId)
                 .filter { it.isNotEmpty() }
                 .distinctUntilChanged()
                 .collect { facts ->
@@ -84,13 +84,12 @@ class FactsByCategoryViewModel @Inject constructor(
 
     private fun syncFacts(categoryId: Int) {
         viewModelScope.launch {
-            categoryRepository.loadRemoteFactsByCategoryId(categoryId).fold(
+            factsByCategoryRepository.loadRemoteFactsByCategoryId(categoryId).fold(
                 onSuccess = { facts ->
                     /**
                      * When receive successful response from server sync it with
                      * local database
                      */
-
                     syncFactsByCategoriesUseCase(categoryId = categoryId, facts = facts)
                 },
                 onFailure = { error ->
