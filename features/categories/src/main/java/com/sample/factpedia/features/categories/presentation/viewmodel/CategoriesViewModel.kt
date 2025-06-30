@@ -10,8 +10,6 @@ import com.sample.factpedia.features.categories.presentation.state.CategoryScree
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -26,6 +24,7 @@ class CategoriesViewModel @Inject constructor(
     private val _state = MutableStateFlow(CategoryScreenState())
     val state = _state
         .onStart {
+            isSyncing.update { true }
             observeCategories()
         }
         .stateIn(
@@ -33,6 +32,8 @@ class CategoriesViewModel @Inject constructor(
             SharingStarted.Lazily,
             CategoryScreenState()
         )
+
+    private val isSyncing = MutableStateFlow(false)
 
     fun onAction(action: CategoryScreenAction) {
         when (action) {
@@ -43,63 +44,48 @@ class CategoriesViewModel @Inject constructor(
     }
 
     private fun retry() {
+        fetchRemoteCategories()
+    }
+
+    private fun observeCategories() {
+        viewModelScope.launch {
+            categoryRepository.getCategoriesFromLocalDatabase()
+                .collect { categories ->
+                    _state.update { currentState ->
+                        currentState.copy(
+                            categories = categories,
+                            isLoading = isSyncing.value
+                        )
+                    }
+                }
+        }
+
+        fetchRemoteCategories()
+    }
+
+    private fun fetchRemoteCategories() {
         _state.update { currentState ->
             currentState.copy(
                 isLoading = true,
                 error = null
             )
         }
-        syncCategories()
-    }
 
-    private fun observeCategories() {
-        _state.update { currentState ->
-            currentState.copy(
-                isLoading = true,
-            )
-        }
-
-        viewModelScope.launch {
-            categoryRepository.getCategoriesFromLocalDatabase()
-                .filter { it.isNotEmpty() }
-                .distinctUntilChanged()
-                .collect { categories ->
-                    /**
-                     * Update categories from local database
-                     */
-                    _state.update { currentState ->
-                        currentState.copy(
-                            categories = categories,
-                            isLoading = false,
-                        )
-                    }
-                }
-        }
-
-        syncCategories()
-    }
-
-    private fun syncCategories() {
         viewModelScope.launch {
             categoryRepository.loadRemoteCategories().fold(
                 onSuccess = { categories ->
-                    /**
-                     * When receive successful response from server sync it with
-                     * local database
-                     */
                     syncCategoriesUseCase(categories)
+                    isSyncing.update { false }
                 },
                 onFailure = { error ->
-                    /**
-                     * It is possible that the local db has the data and
-                     * server returns error so update the state accordingly
-                     */
                     _state.update { currentState ->
                         currentState.copy(
                             error = error,
                             isLoading = false,
                         )
                     }
+
+                    isSyncing.update { false }
                 }
             )
         }

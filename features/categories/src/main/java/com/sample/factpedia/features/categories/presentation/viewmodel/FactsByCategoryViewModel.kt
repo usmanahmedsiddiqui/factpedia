@@ -67,9 +67,6 @@ class FactsByCategoryViewModel @Inject constructor(
                 .filter { it.isNotEmpty() }
                 .distinctUntilChanged()
                 .collect { facts ->
-                    /**
-                     * Update facts from local database
-                     */
                     _state.update { currentState ->
                         currentState.copy(
                             facts = facts,

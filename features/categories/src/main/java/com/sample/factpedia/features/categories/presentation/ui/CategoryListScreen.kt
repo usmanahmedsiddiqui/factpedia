@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sample.factpedia.core.common.utils.toUiMessageRes
+import com.sample.factpedia.core.designsystem.components.empty.FactPediaEmptyMessage
 import com.sample.factpedia.core.designsystem.components.error.FactPediaError
 import com.sample.factpedia.core.designsystem.components.loading.FactPediaLoadingBar
 import com.sample.factpedia.core.designsystem.components.text.FactPediaText
@@ -30,46 +31,55 @@ fun CategoryListScreen(
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle().value
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        when {
-            state.isLoading -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    FactPediaLoadingBar()
-                }
-            }
-
-            state.error != null && state.categories.isEmpty() -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    FactPediaError(
-                        text = state.error.toUiMessageRes(LocalContext.current),
-                        onRetry = { viewModel.onAction(CategoryScreenAction.RetryClicked) }
+        if (state.categories.isNotEmpty()) {
+            LazyColumn {
+                items(state.categories) { category ->
+                    FactPediaText(
+                        text = category.name,
+                        textStyle = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onCategoryClick(category) }
+                            .padding(Spacings.spacing16)
                     )
                 }
             }
+        }
 
-            state.categories.isNotEmpty() -> {
-                LazyColumn {
-                    items(state.categories) { category ->
-                        FactPediaText(
-                            text = category.name,
-                            textStyle = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable { onCategoryClick(category) }
-                                .padding(Spacings.spacing16)
-                        )
-                    }
-                }
+        if (state.isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                FactPediaLoadingBar()
+            }
+        }
+
+        if (!state.isLoading && state.categories.isEmpty()) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                FactPediaEmptyMessage(
+                    text = "No categories found!"
+                )
+            }
+        }
+
+        if (state.error != null && state.categories.isEmpty()) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                FactPediaError(
+                    text = state.error.toUiMessageRes(LocalContext.current),
+                    onRetry = { viewModel.onAction(CategoryScreenAction.RetryClicked) }
+                )
             }
         }
     }

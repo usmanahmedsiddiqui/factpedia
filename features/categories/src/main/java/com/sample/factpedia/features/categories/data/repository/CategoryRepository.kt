@@ -9,5 +9,6 @@ import kotlinx.coroutines.flow.Flow
 interface CategoryRepository {
     fun getCategoriesFromLocalDatabase(): Flow<List<Category>>
     suspend fun loadRemoteCategories(): Response<List<Category>, DataError>
-
+    suspend fun upsertCategories(categories: List<Category>)
+    suspend fun deleteCategoriesNotIn(ids: List<Int>)
 }

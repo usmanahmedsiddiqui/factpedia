@@ -7,6 +7,7 @@ import com.sample.factpedia.database.dao.CategoryDao
 import com.sample.factpedia.database.model.CategoryEntity
 import com.sample.factpedia.features.categories.data.model.CategoryApiModel
 import com.sample.factpedia.features.categories.data.model.asDomainModel
+import com.sample.factpedia.features.categories.data.model.asEntity
 import com.sample.factpedia.features.categories.data.repository.CategoryDataSource
 import com.sample.factpedia.features.categories.data.repository.CategoryRepository
 import com.sample.factpedia.features.categories.di.CategoryLocalDataSource
@@ -30,4 +31,8 @@ class DefaultCategoryRepository @Inject constructor(
             categoryDataSource.getCategories().map(CategoryApiModel::asDomainModel)
         }
     }
+
+    override suspend fun upsertCategories(categories: List<Category>) = categoryDao.upsertCategories(categories.map(Category::asEntity))
+
+    override suspend fun deleteCategoriesNotIn(ids: List<Int>) =  categoryDao.deleteCategoriesNotIn(ids)
 }

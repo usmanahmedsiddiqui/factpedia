@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.setup.serialization)
     alias(libs.plugins.setup.retrofit)
     alias(libs.plugins.setup.navigation)
+    alias(libs.plugins.setup.junit.testing)
 
 }
 
@@ -20,5 +21,6 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.model)
     implementation(projects.core.network)
+    implementation(projects.core.testing)
     implementation(projects.core.ui)
 }

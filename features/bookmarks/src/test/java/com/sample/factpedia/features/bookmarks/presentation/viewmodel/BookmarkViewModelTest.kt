@@ -20,7 +20,7 @@ class BookmarkViewModelTest {
 
     private val fakeFactsRepository = FakeFactRepository()
     private val fakeBookmarksRepository = FakeBookmarksRepository()
-    private val repository = DefaultBookmarkedFactsRepository(
+    private val bookmarkedFactsRepository = DefaultBookmarkedFactsRepository(
         factsRepository = fakeFactsRepository,
         bookmarksRepository = fakeBookmarksRepository
     )
@@ -30,7 +30,9 @@ class BookmarkViewModelTest {
 
     @BeforeEach
     fun setup() {
-        viewModel = BookmarkViewModel(repository)
+        viewModel = BookmarkViewModel(
+            bookmarkedFactsRepository = bookmarkedFactsRepository
+        )
     }
 
     @Test
