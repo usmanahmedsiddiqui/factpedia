@@ -18,7 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.sample.factpedia.core.designsystem.components.radiobutton.FactPediaRadioButton
 import com.sample.factpedia.core.designsystem.components.text.FactPediaText
 import com.sample.factpedia.core.designsystem.theme.Spacings
-import com.sample.factpedia.datastore.ThemePreference
+import com.sample.factpedia.core.model.domain.ThemePreference
 import com.sample.factpedia.features.settings.presentation.actions.SettingsScreenAction
 import com.sample.factpedia.features.settings.presentation.viewmodel.SettingsViewModel
 

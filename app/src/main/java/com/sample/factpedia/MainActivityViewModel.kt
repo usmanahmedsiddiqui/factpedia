@@ -2,8 +2,8 @@ package com.sample.factpedia
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sample.factpedia.datastore.ThemePreference
-import com.sample.factpedia.datastore.UserPreferencesDataStore
+import com.sample.factpedia.core.data.repository.UserPreferencesRepository
+import com.sample.factpedia.core.model.domain.ThemePreference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
-    private val userPreferencesDataStore: UserPreferencesDataStore
+    private val userPreferencesRepository: UserPreferencesRepository
 ): ViewModel() {
 
     private val _state = MutableStateFlow(ThemePreference.SYSTEM)
@@ -30,7 +30,7 @@ class MainActivityViewModel @Inject constructor(
 
     private fun observeTheme() {
         viewModelScope.launch {
-            userPreferencesDataStore.themePreferenceFlow.collect { theme ->
+            userPreferencesRepository.themePreferenceFlow.collect { theme ->
                 _state.value = theme
             }
         }

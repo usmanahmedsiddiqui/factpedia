@@ -7,14 +7,13 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.sample.factpedia.core.model.domain.ThemePreference
 import com.sample.factpedia.datastore.UserPreferencesDataStore.PreferencesKeys.THEME
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
-
-enum class ThemePreference { LIGHT, DARK, SYSTEM }
 
 @Singleton
 class UserPreferencesDataStore @Inject constructor(

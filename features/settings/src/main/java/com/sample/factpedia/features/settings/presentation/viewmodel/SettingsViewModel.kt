@@ -2,8 +2,8 @@ package com.sample.factpedia.features.settings.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sample.factpedia.datastore.ThemePreference
-import com.sample.factpedia.datastore.UserPreferencesDataStore
+import com.sample.factpedia.core.data.repository.UserPreferencesRepository
+import com.sample.factpedia.core.model.domain.ThemePreference
 import com.sample.factpedia.features.settings.presentation.actions.SettingsScreenAction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val userPreferencesDataStore: UserPreferencesDataStore
+    private val userPreferencesRepository: UserPreferencesRepository,
 ): ViewModel() {
 
     private val _state = MutableStateFlow(ThemePreference.SYSTEM)
@@ -31,7 +31,7 @@ class SettingsViewModel @Inject constructor(
 
     private fun observeTheme() {
         viewModelScope.launch {
-            userPreferencesDataStore.themePreferenceFlow.collect { theme ->
+            userPreferencesRepository.themePreferenceFlow.collect { theme ->
                 _state.value = theme
             }
         }
@@ -41,7 +41,7 @@ class SettingsViewModel @Inject constructor(
         when(action) {
             is SettingsScreenAction.ThemeChanged -> {
                 viewModelScope.launch {
-                    userPreferencesDataStore.setThemePreference(action.preference)
+                    userPreferencesRepository.setThemePreference(action.preference)
                 }
             }
         }

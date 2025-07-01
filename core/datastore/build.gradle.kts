@@ -7,3 +7,7 @@ plugins {
 android {
     namespace = "com.sample.factpedia.datastore"
 }
+
+dependencies {
+    implementation(projects.core.model)
+}

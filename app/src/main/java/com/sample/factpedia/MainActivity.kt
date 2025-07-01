@@ -8,7 +8,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sample.factpedia.core.designsystem.theme.FactPediaTheme
-import com.sample.factpedia.datastore.ThemePreference
+import com.sample.factpedia.core.model.domain.ThemePreference
 import com.sample.factpedia.ui.FactPediaApp
 import com.sample.factpedia.ui.rememberFactPediaAppState
 import dagger.hilt.android.AndroidEntryPoint
