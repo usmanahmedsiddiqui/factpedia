@@ -14,17 +14,20 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
+
 class CategoriesViewModelTest {
 
     private lateinit var viewModel: CategoriesViewModel
-    private val categoryRepository = FakeCategoryRepository()
-    private val syncCategoriesUseCase = SyncCategoriesUseCase(categoryRepository)
+    private lateinit var categoryRepository: FakeCategoryRepository
+    private lateinit var syncCategoriesUseCase: SyncCategoriesUseCase
 
     @get:Rule
     val dispatcherRule = MainDispatcherRule()
 
     @BeforeEach
     fun setup() {
+        categoryRepository = FakeCategoryRepository()
+        syncCategoriesUseCase = SyncCategoriesUseCase(categoryRepository)
         viewModel = CategoriesViewModel(
             categoryRepository = categoryRepository,
             syncCategoriesUseCase = syncCategoriesUseCase,
@@ -32,220 +35,142 @@ class CategoriesViewModelTest {
     }
 
     @Test
-    fun `GIVEN empty local database and successful remote, WHEN screen is loaded, THEN emits loading and then categories`() = runTest {
-        val remoteCategories = listOf(Category(1, "Science"))
-        categoryRepository.setRemoteCategories(remoteCategories)
-
-        viewModel.state.test {
-            assertEquals(
-                CategoryScreenState(
-                    isLoading = false,
-                    categories = emptyList(),
-                    error = null,
-                ),
-                awaitItem()
-            )
-
-            assertEquals(
-                CategoryScreenState(
-                    isLoading = true,
-                    categories = emptyList(),
-                    error = null,
-                ),
-                awaitItem()
-            )
-
-            assertEquals(
-                CategoryScreenState(
-                    isLoading = false,
-                    categories = remoteCategories,
-                    error = null,
-                ),
-                awaitItem()
-            )
-            cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
-    fun `GIVEN empty local database and remote error, WHEN screen is loaded, THEN emits loading and then error`() = runTest {
-        categoryRepository.shouldFail = true
-        val dataError = DataError.Network.FORBIDDEN
-        categoryRepository.setRemoteError(dataError)
-
-        viewModel.state.test {
-            assertEquals(
-                CategoryScreenState(
-                    isLoading = false,
-                    categories = emptyList(),
-                    error = null,
-                ),
-                awaitItem()
-            )
-
-            assertEquals(
-                CategoryScreenState(
-                    isLoading = true,
-                    categories = emptyList(),
-                    error = null,
-                ),
-                awaitItem()
-            )
-
-            assertEquals(
-                CategoryScreenState(
-                    isLoading = false,
-                    categories = emptyList(),
-                    error = dataError,
-                ),
-                awaitItem()
-            )
-
-            cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
-    fun `GIVEN local data and remote error, when screen is loaded, then shows local data and error`() = runTest {
-        val localCategories = listOf(Category(1, "Math"))
-        categoryRepository.upsertCategories(localCategories)
-        val dataError = DataError.Network.FORBIDDEN
-        categoryRepository.shouldFail = true
-        categoryRepository.setRemoteError(dataError)
-
-        viewModel.state.test {
-            assertEquals(
-                CategoryScreenState(
-                    isLoading = false,
-                    categories = emptyList(),
-                    error = null,
-                ),
-                awaitItem()
-            )
-
-            assertEquals(
-                CategoryScreenState(
-                    isLoading = true,
-                    categories = emptyList(),
-                    error = null,
-                ),
-                awaitItem()
-            )
-
-            assertEquals(
-                CategoryScreenState(
-                    isLoading = true,
-                    categories = localCategories,
-                    error = null,
-                ),
-                awaitItem()
-            )
-
-            assertEquals(
-                CategoryScreenState(
-                    isLoading = false,
-                    categories = localCategories,
-                    error = dataError,
-                ),
-                awaitItem()
-            )
-
-            cancelAndIgnoreRemainingEvents()
-        }
-    }
-
-    @Test
-    fun `GIVEN no local data and remote error, WHEN retry is called, THEN attempts to sync again and show categories from server when successfully loaded`() = runTest {
-        val dataError = DataError.Network.FORBIDDEN
-        val remoteCategories = listOf(Category(2, "Tech"))
-
-        categoryRepository.shouldFail = true
-        categoryRepository.setRemoteError(dataError)
-
-        viewModel.state.test {
-            assertEquals(
-                CategoryScreenState(
-                    isLoading = false,
-                    categories = emptyList(),
-                    error = null,
-                ),
-                awaitItem()
-            )
-
-            assertEquals(
-                CategoryScreenState(
-                    isLoading = true,
-                    categories = emptyList(),
-                    error = null,
-                ),
-                awaitItem()
-            )
-
-            assertEquals(
-                CategoryScreenState(
-                    isLoading = false,
-                    categories = emptyList(),
-                    error = dataError,
-                ),
-                awaitItem()
-            )
-
-            categoryRepository.shouldFail = false
+    fun `GIVEN empty local database and successful remote, WHEN screen is loaded, THEN emits loading and then categories`() =
+        runTest {
+            val remoteCategories = listOf(Category(1, "Science"))
             categoryRepository.setRemoteCategories(remoteCategories)
 
-            viewModel.onAction(CategoryScreenAction.RetryClicked)
-
-            assertEquals(
-                CategoryScreenState(
-                    isLoading = true,
-                    categories = emptyList(),
-                    error = null,
-                ),
-                awaitItem()
-            )
-
-            assertEquals(
-                CategoryScreenState(
-                    isLoading = false,
-                    categories = remoteCategories,
-                    error = null,
-                ),
-                awaitItem()
-            )
-
-            cancelAndIgnoreRemainingEvents()
+            viewModel.state.test {
+                testInitialState(awaitItem())
+                testLoadingState(awaitItem())
+                testDataState(awaitItem(), remoteCategories)
+                cancelAndIgnoreRemainingEvents()
+            }
         }
-    }
 
     @Test
-    fun `GIVEN no remote data and no local data, WHEN screen is loaded THEN show empty state`() = runTest {
-        viewModel.state.test {
-            assertEquals(
-                CategoryScreenState(
-                    isLoading = false,
-                    categories = emptyList(),
-                    error = null,
-                ),
-                awaitItem()
-            )
+    fun `GIVEN empty local database and remote error, WHEN screen is loaded, THEN emits loading and then error`() =
+        runTest {
+            val dataError = DataError.Network.FORBIDDEN
+            categoryRepository.setRemoteError(dataError)
 
-            assertEquals(
-                CategoryScreenState(
-                    isLoading = true,
-                    categories = emptyList(),
-                    error = null,
-                ),
-                awaitItem()
-            )
 
-            assertEquals(
-                CategoryScreenState(
-                    isLoading = false,
-                    categories = emptyList(),
-                    error = null,
-                ),
-                awaitItem()
-            )
+            viewModel.state.test {
+                testInitialState(awaitItem())
+                testLoadingState(awaitItem())
+                testErrorState(awaitItem(), dataError)
+
+                val finalState = awaitItem()
+                assertEquals(false, finalState.isLoading)
+                assertEquals(emptyList(), finalState.categories)
+                assertEquals(finalState.error, dataError)
+
+                cancelAndIgnoreRemainingEvents()
+            }
         }
+
+    @Test
+    fun `GIVEN empty local database and remote error, WHEN retry is called, THEN attempts to sync again and show categories from server when successfully loaded`() =
+        runTest {
+            val dataError = DataError.Network.FORBIDDEN
+            val remoteCategories = listOf(Category(2, "Tech"))
+
+            categoryRepository.setRemoteError(dataError)
+
+            viewModel.state.test {
+                testInitialState(awaitItem())
+                testLoadingState(awaitItem())
+                testErrorState(awaitItem(), dataError)
+                val finalStateBeforeRetry = awaitItem()
+                assertEquals(false, finalStateBeforeRetry.isLoading)
+                assertEquals(emptyList(), finalStateBeforeRetry.categories)
+                assertEquals(dataError, finalStateBeforeRetry.error)
+
+                categoryRepository.setRemoteCategories(remoteCategories)
+
+                viewModel.onAction(CategoryScreenAction.RetryClicked)
+
+                testLoadingState(awaitItem())
+                testDataState(awaitItem(), remoteCategories)
+
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `GIVEN local data and remote error, when screen is loaded, then shows local data and error`() =
+        runTest {
+            val localCategories = listOf(Category(1, "Math"))
+            categoryRepository.upsertCategories(localCategories)
+            val dataError = DataError.Network.FORBIDDEN
+            categoryRepository.setRemoteError(dataError)
+
+            viewModel.state.test {
+                testInitialState(awaitItem())
+                testLoadingState(awaitItem())
+                testErrorState(awaitItem(), dataError)
+
+                val finalState = awaitItem()
+                assertEquals(false, finalState.isLoading)
+                assertEquals(localCategories, finalState.categories)
+                assertEquals(dataError, finalState.error)
+
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `GIVEN local data and remote fetch success, when screen is loaded, then shows remote data`() =
+        runTest {
+            val localCategories = listOf(Category(1, "Math"))
+            val remoteCategories = listOf(Category(1, "Math"), Category(2, "Physics"))
+            categoryRepository.upsertCategories(localCategories)
+            categoryRepository.setRemoteCategories(remoteCategories)
+
+            viewModel.state.test {
+                testInitialState(awaitItem())
+                testLoadingState(awaitItem())
+                testDataState(awaitItem(), remoteCategories)
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+
+    @Test
+    fun `GIVEN no remote data and no local data, WHEN screen is loaded THEN show empty state`() =
+        runTest {
+            viewModel.state.test {
+                testInitialState(awaitItem())
+                testLoadingState(awaitItem())
+                testEmptyState(awaitItem())
+            }
+        }
+
+    private fun testInitialState(initialState: CategoryScreenState) {
+        assertEquals(false, initialState.isLoading)
+        assertEquals(null, initialState.error)
+        assertEquals(emptyList(), initialState.categories)
+    }
+
+    private fun testEmptyState(initialState: CategoryScreenState) {
+        assertEquals(false, initialState.isLoading)
+        assertEquals(null, initialState.error)
+        assertEquals(emptyList(), initialState.categories)
+    }
+
+    private fun testLoadingState(loadingState: CategoryScreenState) {
+        assertEquals(true, loadingState.isLoading)
+        assertEquals(null, loadingState.error)
+        assertEquals(emptyList(), loadingState.categories)
+    }
+
+    private fun testDataState(dataState: CategoryScreenState, categories: List<Category>) {
+        assertEquals(null, dataState.error)
+        assertEquals(categories, dataState.categories)
+        assertEquals(false, dataState.isLoading)
+    }
+
+    private fun testErrorState(errorState: CategoryScreenState, error: DataError) {
+        assertEquals(error, errorState.error)
     }
 }

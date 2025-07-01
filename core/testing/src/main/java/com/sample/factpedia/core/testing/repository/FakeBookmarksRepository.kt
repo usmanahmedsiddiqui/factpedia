@@ -11,6 +11,10 @@ class FakeBookmarksRepository: BookmarksRepository {
     private val bookmarksFlow: MutableSharedFlow<List<Int>> =
         MutableSharedFlow(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 
+    init {
+        bookmarksFlow.tryEmit(emptyList())
+    }
+
     override suspend fun addBookmark(factId: Int) {
         if (!bookmarkIds.contains(factId)) {
             bookmarkIds.add(factId)
@@ -25,5 +29,6 @@ class FakeBookmarksRepository: BookmarksRepository {
     }
 
     override fun getAllBookmarks(): Flow<List<Int>> = bookmarksFlow
+
     override suspend fun isBookmarked(factId: Int): Boolean = false
 }

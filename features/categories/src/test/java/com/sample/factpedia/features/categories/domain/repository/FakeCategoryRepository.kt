@@ -4,20 +4,14 @@ import com.sample.factpedia.core.common.result.DataError
 import com.sample.factpedia.core.common.result.Response
 import com.sample.factpedia.features.categories.data.repository.CategoryRepository
 import com.sample.factpedia.features.categories.domain.model.Category
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 
-class FakeCategoryRepository: CategoryRepository {
-    var shouldFail: Boolean = false
+class FakeCategoryRepository : CategoryRepository {
+    private var shouldFail: Boolean = false
     private val localCategories = mutableListOf<Category>()
     private var remoteCategories: List<Category> = emptyList()
     private var remoteError: DataError = DataError.Network.TIMEOUT
 
-    private val categoriesFlow: MutableSharedFlow<List<Category>> =
-        MutableSharedFlow(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
-
-    override fun getCategoriesFromLocalDatabase(): Flow<List<Category>> = categoriesFlow
+    override suspend fun getCategoriesFromLocalDatabase(): List<Category> = localCategories
 
     override suspend fun loadRemoteCategories(): Response<List<Category>, DataError> {
         return if (shouldFail) {
@@ -28,20 +22,27 @@ class FakeCategoryRepository: CategoryRepository {
     }
 
     override suspend fun upsertCategories(categories: List<Category>) {
-        this.localCategories.addAll(categories)
-        categoriesFlow.emit(this.localCategories.toList())
+        val existing = localCategories.associateBy { it.id }.toMutableMap()
+
+        for (category in categories) {
+            existing[category.id] = category
+        }
+
+        localCategories.clear()
+        localCategories.addAll(existing.values)
     }
 
     override suspend fun deleteCategoriesNotIn(ids: List<Int>) {
         localCategories.removeAll { it.id !in ids }
-        categoriesFlow.emit(localCategories.toList())
     }
 
     fun setRemoteCategories(categories: List<Category>) {
         this.remoteCategories = categories
+        shouldFail = false
     }
 
     fun setRemoteError(remoteError: DataError) {
-      this.remoteError = remoteError
+        this.remoteError = remoteError
+        shouldFail = true
     }
 }

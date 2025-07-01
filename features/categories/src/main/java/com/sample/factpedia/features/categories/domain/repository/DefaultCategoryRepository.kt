@@ -13,8 +13,6 @@ import com.sample.factpedia.features.categories.data.repository.CategoryReposito
 import com.sample.factpedia.features.categories.di.CategoryLocalDataSource
 import com.sample.factpedia.features.categories.domain.model.Category
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class DefaultCategoryRepository @Inject constructor(
@@ -22,8 +20,8 @@ class DefaultCategoryRepository @Inject constructor(
     private val categoryDao: CategoryDao,
 ) : CategoryRepository {
 
-    override fun getCategoriesFromLocalDatabase(): Flow<List<Category>> =
-        categoryDao.getAllCategories().map { list -> list.map(CategoryEntity::asDomainModel) }
+    override suspend fun getCategoriesFromLocalDatabase(): List<Category> =
+        categoryDao.getAllCategories().map(CategoryEntity::asDomainModel)
 
     override suspend fun loadRemoteCategories(): Response<List<Category>, DataError> {
         delay(5000)
@@ -32,7 +30,9 @@ class DefaultCategoryRepository @Inject constructor(
         }
     }
 
-    override suspend fun upsertCategories(categories: List<Category>) = categoryDao.upsertCategories(categories.map(Category::asEntity))
+    override suspend fun upsertCategories(categories: List<Category>) =
+        categoryDao.upsertCategories(categories.map(Category::asEntity))
 
-    override suspend fun deleteCategoriesNotIn(ids: List<Int>) =  categoryDao.deleteCategoriesNotIn(ids)
+    override suspend fun deleteCategoriesNotIn(ids: List<Int>) =
+        categoryDao.deleteCategoriesNotIn(ids)
 }

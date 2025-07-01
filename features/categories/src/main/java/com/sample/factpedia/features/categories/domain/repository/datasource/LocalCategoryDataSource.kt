@@ -1,4 +1,4 @@
-package com.sample.factpedia.features.categories.domain.repository
+package com.sample.factpedia.features.categories.domain.repository.datasource
 
 import android.content.Context
 import com.sample.factpedia.core.common.utils.readAssetFile

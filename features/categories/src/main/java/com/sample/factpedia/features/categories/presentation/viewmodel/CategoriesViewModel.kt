@@ -10,6 +10,7 @@ import com.sample.factpedia.features.categories.presentation.state.CategoryScree
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -24,8 +25,7 @@ class CategoriesViewModel @Inject constructor(
     private val _state = MutableStateFlow(CategoryScreenState())
     val state = _state
         .onStart {
-            isSyncing.update { true }
-            observeCategories()
+            sync()
         }
         .stateIn(
             viewModelScope,
@@ -33,41 +33,48 @@ class CategoriesViewModel @Inject constructor(
             CategoryScreenState()
         )
 
-    private val isSyncing = MutableStateFlow(false)
+    private val isSyncing = MutableStateFlow(true)
 
     fun onAction(action: CategoryScreenAction) {
         when (action) {
             CategoryScreenAction.RetryClicked -> {
-                retry()
+                fetchRemoteCategories()
             }
         }
     }
 
-    private fun retry() {
-        fetchRemoteCategories()
-    }
-
-    private fun observeCategories() {
+    private fun sync() {
         viewModelScope.launch {
-            categoryRepository.getCategoriesFromLocalDatabase()
-                .collect { categories ->
-                    _state.update { currentState ->
-                        currentState.copy(
-                            categories = categories,
-                            isLoading = isSyncing.value
-                        )
-                    }
-                }
+            isSyncing.filter { isSyncInProcess ->
+                !isSyncInProcess
+            }.collect {
+                fetchLocalCategories()
+            }
         }
 
         fetchRemoteCategories()
     }
 
+    private fun fetchLocalCategories() {
+        viewModelScope.launch {
+            val categories = categoryRepository.getCategoriesFromLocalDatabase()
+            _state.update { currentState ->
+                currentState.copy(
+                    categories = categories,
+                    isLoading = false
+                )
+            }
+        }
+    }
+
     private fun fetchRemoteCategories() {
+        isSyncing.update { true }
+
         _state.update { currentState ->
             currentState.copy(
                 isLoading = true,
-                error = null
+                error = null,
+                categories = emptyList()
             )
         }
 
@@ -81,10 +88,8 @@ class CategoriesViewModel @Inject constructor(
                     _state.update { currentState ->
                         currentState.copy(
                             error = error,
-                            isLoading = false,
                         )
                     }
-
                     isSyncing.update { false }
                 }
             )

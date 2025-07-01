@@ -16,14 +16,6 @@ data class FactEntity (
     val createdAt: Long = System.currentTimeMillis()
 )
 
-fun FactEntity.asDomainModel(isBookmarked: Boolean) = Fact(
-    id = this.id,
-    fact = this.fact,
-    categoryName = this.categoryName,
-    categoryId = this.categoryId,
-    isBookmarked = isBookmarked,
-)
-
 fun FactEntity.asDomainModel() = Fact(
     id = this.id,
     fact = this.fact,

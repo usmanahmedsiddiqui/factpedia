@@ -9,22 +9,41 @@ import kotlinx.coroutines.flow.map
 
 class FakeFactRepository : FactsRepository {
 
+    private val localFacts = mutableListOf<Fact>()
     private val factsFlow: MutableSharedFlow<List<Fact>> =
         MutableSharedFlow(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 
+    init {
+        factsFlow.tryEmit(emptyList())
+    }
     override fun getFactsByIds(ids: List<Int>): Flow<List<Fact>> = factsFlow.map { facts ->
         facts.filter { it.id in ids }
     }
 
-    override fun getFactsByCategoryId(categoryId: Int): Flow<List<Fact>> = factsFlow
+    override fun getFactsByCategoryId(categoryId: Int): Flow<List<Fact>> = factsFlow.map { facts ->
+        facts.filter { it.categoryId == categoryId }
+    }
 
-    override suspend fun upsertFacts(facts: List<Fact>) = factsFlow.emit(facts)
+    override suspend fun upsertFacts(facts: List<Fact>) {
+        val existing = localFacts.associateBy { it.id }.toMutableMap()
 
-    override suspend fun deleteFactsNotInCategory(categoryId: Int, factId: List<Int>) {}
+        for (fact in facts) {
+            existing[fact.id] = fact
+        }
+
+        localFacts.clear()
+        localFacts.addAll(existing.values)
+
+        factsFlow.emit(localFacts.toList())
+
+    }
+
+    override suspend fun deleteFactsNotInCategory(categoryId: Int, factId: List<Int>) {
+        localFacts.removeAll { it.id !in factId }
+        factsFlow.emit(localFacts.toList())
+    }
 
     override suspend fun getRandomFactExcluding(excludedId: Int): Fact? = null
 
     override suspend fun getRandomFact(): Fact? = null
-
-
 }
