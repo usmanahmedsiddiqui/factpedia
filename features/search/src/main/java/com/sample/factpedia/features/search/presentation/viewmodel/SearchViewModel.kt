@@ -2,22 +2,22 @@ package com.sample.factpedia.features.search.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sample.factpedia.core.common.result.Response
 import com.sample.factpedia.core.common.result.fold
+import com.sample.factpedia.core.data.repository.FactsRepository
 import com.sample.factpedia.core.domain.ToggleBookmarkUseCase
-import com.sample.factpedia.features.search.domain.usecase.SearchFactsUseCase
+import com.sample.factpedia.features.search.data.repository.SearchRepository
+import com.sample.factpedia.features.search.domain.usecase.SearchFactsFromLocalDatabaseUseCase
 import com.sample.factpedia.features.search.presentation.action.SearchScreenAction
 import com.sample.factpedia.features.search.presentation.state.SearchScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -27,7 +27,9 @@ import javax.inject.Inject
 @OptIn(FlowPreview::class)
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val searchFactsUseCase: SearchFactsUseCase,
+    private val searchRepository: SearchRepository,
+    private val factsRepository: FactsRepository,
+    private val searchFactsFromLocalDatabaseUseCase: SearchFactsFromLocalDatabaseUseCase,
     private val toggleBookmarkUseCase: ToggleBookmarkUseCase,
 ) : ViewModel() {
     private val _state = MutableStateFlow(SearchScreenState())
@@ -41,35 +43,33 @@ class SearchViewModel @Inject constructor(
         )
 
     private val searchQuery = MutableSharedFlow<String>(replay = 1)
+    private val isSyncing = MutableStateFlow(true)
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+
     private fun observeSearchQuery() {
         viewModelScope.launch {
             searchQuery
                 .debounce(300)
                 .distinctUntilChanged()
-                .flatMapLatest {
-                    if (it.isBlank()) {
-                        flowOf(Response.Success(emptyList()))
-                    } else {
-                        searchFactsUseCase(it)
+                .onEach { query ->
+                    if(query.isBlank()) {
+                        _state.update { it.copy(searchResults = emptyList(), error = null) }
                     }
                 }
-                .collect { response ->
-                    response.fold(
-                        { facts ->
-                            _state.update {
-                                it.copy(searchResults = facts, error = null)
-                            }
-                        },
-                        { error ->
-                            _state.update {
-                                it.copy(searchResults = emptyList(), error = error)
-                            }
-                        }
-                    )
+                .filter { it.isNotBlank() }
+                .collect { query ->
+                    performRemoteSearch(query)
                 }
+        }
 
+        viewModelScope.launch {
+            viewModelScope.launch {
+                isSyncing.filter { isSyncInProcess ->
+                    !isSyncInProcess
+                }.collect {
+                    performLocalSearch()
+                }
+            }
         }
     }
 
@@ -88,15 +88,42 @@ class SearchViewModel @Inject constructor(
             )
 
             is SearchScreenAction.ClearSearch -> {
-                _state.update {
-                    it.copy(
-                        query = "",
-                        searchResults = emptyList(),
-                        error = null
-                    )
+                _state.update { it.copy(query = "") }
+                viewModelScope.launch {
+                    searchQuery.emit("")
                 }
             }
+        }
+    }
 
+    private fun performRemoteSearch(query: String) {
+        isSyncing.update { true }
+        viewModelScope.launch {
+            searchRepository.search(query)
+                .fold(
+                    onSuccess = { result ->
+                        factsRepository.upsertFacts(result)
+                        isSyncing.update { false }
+                    },
+                    onFailure = { error ->
+                        _state.update { it.copy(error = error) }
+                        isSyncing.update { false }
+                    }
+                )
+        }
+    }
+
+    private fun performLocalSearch() {
+        viewModelScope.launch {
+            val query = state.value.query
+            searchFactsFromLocalDatabaseUseCase(query)
+                .collect {
+                    _state.update { currentState ->
+                        currentState.copy(
+                            searchResults = it,
+                        )
+                    }
+                }
         }
     }
 

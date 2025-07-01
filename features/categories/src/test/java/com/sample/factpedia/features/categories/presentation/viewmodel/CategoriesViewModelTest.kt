@@ -143,31 +143,32 @@ class CategoriesViewModelTest {
                 testInitialState(awaitItem())
                 testLoadingState(awaitItem())
                 testEmptyState(awaitItem())
+                cancelAndIgnoreRemainingEvents()
             }
         }
 
-    private fun testInitialState(initialState: CategoryScreenState) {
-        assertEquals(false, initialState.isLoading)
-        assertEquals(null, initialState.error)
-        assertEquals(emptyList(), initialState.categories)
+    private fun testInitialState(state: CategoryScreenState) {
+        assertEquals(false, state.isLoading)
+        assertEquals(null, state.error)
+        assertEquals(emptyList(), state.categories)
     }
 
-    private fun testEmptyState(initialState: CategoryScreenState) {
-        assertEquals(false, initialState.isLoading)
-        assertEquals(null, initialState.error)
-        assertEquals(emptyList(), initialState.categories)
+    private fun testEmptyState(state: CategoryScreenState) {
+        assertEquals(false, state.isLoading)
+        assertEquals(null, state.error)
+        assertEquals(emptyList(), state.categories)
     }
 
-    private fun testLoadingState(loadingState: CategoryScreenState) {
-        assertEquals(true, loadingState.isLoading)
-        assertEquals(null, loadingState.error)
-        assertEquals(emptyList(), loadingState.categories)
+    private fun testLoadingState(state: CategoryScreenState) {
+        assertEquals(true, state.isLoading)
+        assertEquals(null, state.error)
+        assertEquals(emptyList(), state.categories)
     }
 
-    private fun testDataState(dataState: CategoryScreenState, categories: List<Category>) {
-        assertEquals(null, dataState.error)
-        assertEquals(categories, dataState.categories)
-        assertEquals(false, dataState.isLoading)
+    private fun testDataState(state: CategoryScreenState, categories: List<Category>) {
+        assertEquals(null, state.error)
+        assertEquals(categories, state.categories)
+        assertEquals(false, state.isLoading)
     }
 
     private fun testErrorState(errorState: CategoryScreenState, error: DataError) {

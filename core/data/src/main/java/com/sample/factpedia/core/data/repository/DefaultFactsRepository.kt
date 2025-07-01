@@ -18,6 +18,9 @@ class DefaultFactsRepository @Inject constructor(
     override fun getFactsByCategoryId(categoryId: Int): Flow<List<Fact>> =
         factDao.getFactsByCategoryId(categoryId).map { list -> list.map(FactEntity::asDomainModel) }
 
+    override suspend fun searchFacts(query: String): List<Fact> =
+        factDao.searchFacts(query).map(FactEntity::asDomainModel)
+
     override suspend fun upsertFacts(facts: List<Fact>) {
         val entities = facts.map(Fact::asEntity)
         factDao.upsertFacts(entities)

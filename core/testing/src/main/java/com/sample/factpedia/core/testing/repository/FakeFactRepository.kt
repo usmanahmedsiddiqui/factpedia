@@ -50,5 +50,9 @@ class FakeFactRepository : FactsRepository {
 
     override suspend fun getRandomFact(): Fact? = localFacts.firstOrNull()
 
-    fun getAllFacts() = localFacts
+    override suspend fun searchFacts(query: String): List<Fact> =
+        localFacts.filter { fact ->
+            fact.fact.contains(query, ignoreCase = true) ||
+                    fact.categoryName.contains(query, ignoreCase = true)
+        }
 }

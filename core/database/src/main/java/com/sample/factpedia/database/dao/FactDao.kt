@@ -25,4 +25,11 @@ interface FactDao {
 
     @Query("SELECT * FROM facts WHERE id IN (:ids)")
     fun getFactsByIds(ids: List<Int>): Flow<List<FactEntity>>
+
+    @Query("""
+    SELECT * FROM facts
+    WHERE fact LIKE '%' || :query || '%' COLLATE NOCASE
+       OR categoryName LIKE '%' || :query || '%' COLLATE NOCASE
+""")
+    suspend fun searchFacts(query: String): List<FactEntity>
 }

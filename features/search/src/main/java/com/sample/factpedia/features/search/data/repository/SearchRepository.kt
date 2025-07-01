@@ -8,5 +8,4 @@ import kotlinx.coroutines.flow.Flow
 
 interface SearchRepository {
     suspend fun search(query: String): Response<List<Fact>, DataError>
-    fun observeFactsWithBookmarks(ids: List<Int>): Flow<List<BookmarkedFact>>
 }
