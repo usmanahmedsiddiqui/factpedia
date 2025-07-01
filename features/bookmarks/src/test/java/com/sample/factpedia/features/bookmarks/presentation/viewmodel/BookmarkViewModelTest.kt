@@ -38,12 +38,7 @@ class BookmarkViewModelTest {
     @Test
     fun `GIVEN no bookmarks WHEN the screen is loaded THEN empty state is shown`() = runTest {
         viewModel.state.test {
-            assertEquals(
-                BookmarkScreenState(
-                    facts = emptyList()
-                ),
-                awaitItem()
-            )
+            testEmptyState(awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -96,21 +91,8 @@ class BookmarkViewModelTest {
             )
 
             viewModel.state.test {
-                assertEquals(
-                    BookmarkScreenState(
-                        facts = emptyList()
-                    ),
-                    awaitItem()
-                )
-
-
-                assertEquals(
-                    BookmarkScreenState(
-                        facts = result
-                    ),
-                    awaitItem()
-                )
-
+                testEmptyState(awaitItem())
+                testDataState(awaitItem(), result)
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -144,31 +126,19 @@ class BookmarkViewModelTest {
             )
 
             viewModel.state.test {
-                assertEquals(
-                    BookmarkScreenState(
-                        facts = emptyList()
-                    ),
-                    awaitItem()
-                )
-
-
-                assertEquals(
-                    BookmarkScreenState(
-                        facts = result
-                    ),
-                    awaitItem()
-                )
-
+                testEmptyState(awaitItem())
+                testDataState(awaitItem(), result)
                 viewModel.onAction(BookmarkScreenAction.RemoveBookmark(1))
-
-                assertEquals(
-                    BookmarkScreenState(
-                        facts = emptyList()
-                    ),
-                    awaitItem()
-                )
-
+                testEmptyState(awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
         }
+
+    private fun testEmptyState(state: BookmarkScreenState){
+        assertEquals(emptyList(), state.facts)
+    }
+
+    private fun testDataState(state: BookmarkScreenState, list: List<BookmarkedFact>){
+        assertEquals(list, state.facts)
+    }
 }
