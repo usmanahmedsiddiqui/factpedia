@@ -16,6 +16,7 @@ class FakeFactRepository : FactsRepository {
     init {
         factsFlow.tryEmit(emptyList())
     }
+
     override fun getFactsByIds(ids: List<Int>): Flow<List<Fact>> = factsFlow.map { facts ->
         facts.filter { it.id in ids }
     }

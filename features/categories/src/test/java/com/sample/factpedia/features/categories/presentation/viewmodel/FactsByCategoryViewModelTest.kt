@@ -20,7 +20,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-class FactByCategoryViewModelTest {
+class FactsByCategoryViewModelTest {
 
     private lateinit var factsByCategoryRepository: FakeFactsByCategoryRepository
 

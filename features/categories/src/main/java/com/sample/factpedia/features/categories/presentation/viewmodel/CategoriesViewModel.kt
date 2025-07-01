@@ -57,13 +57,15 @@ class CategoriesViewModel @Inject constructor(
 
     private fun fetchLocalCategories() {
         viewModelScope.launch {
-            val categories = categoryRepository.getCategoriesFromLocalDatabase()
-            _state.update { currentState ->
-                currentState.copy(
-                    categories = categories,
-                    isLoading = false
-                )
-            }
+            categoryRepository.getCategoriesFromLocalDatabase()
+                .collect { categories ->
+                    _state.update { currentState ->
+                        currentState.copy(
+                            categories = categories,
+                            isLoading = false
+                        )
+                    }
+                }
         }
     }
 

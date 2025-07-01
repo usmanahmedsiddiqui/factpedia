@@ -4,6 +4,10 @@ import com.sample.factpedia.core.common.result.DataError
 import com.sample.factpedia.core.common.result.Response
 import com.sample.factpedia.features.categories.data.repository.CategoryRepository
 import com.sample.factpedia.features.categories.domain.model.Category
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 
 class FakeCategoryRepository : CategoryRepository {
     private var shouldFail: Boolean = false
@@ -11,7 +15,14 @@ class FakeCategoryRepository : CategoryRepository {
     private var remoteCategories: List<Category> = emptyList()
     private var remoteError: DataError = DataError.Network.TIMEOUT
 
-    override suspend fun getCategoriesFromLocalDatabase(): List<Category> = localCategories
+    private val categoriesFlow: MutableSharedFlow<List<Category>> =
+        MutableSharedFlow(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+
+    init {
+        categoriesFlow.tryEmit(emptyList())
+    }
+
+    override fun getCategoriesFromLocalDatabase(): Flow<List<Category>> = categoriesFlow
 
     override suspend fun loadRemoteCategories(): Response<List<Category>, DataError> {
         return if (shouldFail) {
@@ -30,19 +41,22 @@ class FakeCategoryRepository : CategoryRepository {
 
         localCategories.clear()
         localCategories.addAll(existing.values)
+
+        categoriesFlow.emit(localCategories.toList())
     }
 
     override suspend fun deleteCategoriesNotIn(ids: List<Int>) {
         localCategories.removeAll { it.id !in ids }
+        categoriesFlow.emit(localCategories.toList())
     }
 
     fun setRemoteCategories(categories: List<Category>) {
-        this.remoteCategories = categories
         shouldFail = false
+        this.remoteCategories = categories
     }
 
     fun setRemoteError(remoteError: DataError) {
-        this.remoteError = remoteError
         shouldFail = true
+        this.remoteError = remoteError
     }
 }

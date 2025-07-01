@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface CategoryDao {
 
     @Query("SELECT * FROM categories ORDER BY name ASC")
-    suspend fun getAllCategories(): List<CategoryEntity>
+    fun getAllCategories(): Flow<List<CategoryEntity>>
 
     @Upsert
     suspend fun upsertCategories(categories: List<CategoryEntity>)
