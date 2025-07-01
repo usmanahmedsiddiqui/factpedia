@@ -36,6 +36,7 @@ class FakeFactRepository : FactsRepository {
         localFacts.addAll(existing.values)
 
         factsFlow.emit(localFacts.toList())
+        println("Usman upsertFacts")
 
     }
 
@@ -44,7 +45,10 @@ class FakeFactRepository : FactsRepository {
         factsFlow.emit(localFacts.toList())
     }
 
-    override suspend fun getRandomFactExcluding(excludedId: Int): Fact? = null
+    override suspend fun getRandomFactExcluding(excludedId: Int): Fact? =
+        localFacts.firstOrNull { it.id != excludedId }
 
-    override suspend fun getRandomFact(): Fact? = null
+    override suspend fun getRandomFact(): Fact? = localFacts.firstOrNull()
+
+    fun getAllFacts() = localFacts
 }

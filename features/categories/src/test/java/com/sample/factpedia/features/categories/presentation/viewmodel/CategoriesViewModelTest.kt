@@ -35,7 +35,7 @@ class CategoriesViewModelTest {
     }
 
     @Test
-    fun `GIVEN empty local database and successful remote, WHEN screen is loaded, THEN emits loading and then categories`() =
+    fun `GIVEN empty local database and remote loading success, WHEN screen is loaded, THEN emits loading and then categories`() =
         runTest {
             val remoteCategories = listOf(Category(1, "Science"))
             categoryRepository.setRemoteCategories(remoteCategories)

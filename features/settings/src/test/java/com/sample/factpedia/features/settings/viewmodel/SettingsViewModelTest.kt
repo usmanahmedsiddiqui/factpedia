@@ -4,8 +4,10 @@ import app.cash.turbine.test
 import com.sample.factpedia.core.data.repository.UserPreferencesRepository
 import com.sample.factpedia.core.model.domain.ThemePreference
 import com.sample.factpedia.core.testing.repository.FakeUserPreferencesRepository
+import com.sample.factpedia.core.testing.util.MainDispatcherRule
 import com.sample.factpedia.features.settings.presentation.viewmodel.SettingsViewModel
 import kotlinx.coroutines.test.runTest
+import org.junit.Rule
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
@@ -13,6 +15,9 @@ import kotlin.test.assertEquals
 class SettingsViewModelTest {
     private lateinit var viewModel: SettingsViewModel
     private lateinit var userPreferencesRepository: UserPreferencesRepository
+
+    @get:Rule
+    val dispatcherRule = MainDispatcherRule()
 
     @BeforeEach
     fun setup() {

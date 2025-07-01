@@ -25,6 +25,7 @@ class FakeCategoryRepository : CategoryRepository {
     override fun getCategoriesFromLocalDatabase(): Flow<List<Category>> = categoriesFlow
 
     override suspend fun loadRemoteCategories(): Response<List<Category>, DataError> {
+        delay(10)
         return if (shouldFail) {
             Response.Failure(remoteError)
         } else {
