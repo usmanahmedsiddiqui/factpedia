@@ -62,7 +62,9 @@ fun FactCard(
                     )
 
                     FactPediaIconButton(
-                        modifier = if (fact.isBookmarked) Modifier.testTag("bookmark_${fact.id}") else Modifier.testTag("unbookmark_${fact.id}"),
+                        modifier = if (fact.isBookmarked) Modifier.testTag("bookmark_${fact.id}") else Modifier.testTag(
+                            "unbookmark_${fact.id}"
+                        ),
                         icon = if (fact.isBookmarked) FactPediaIcons.BookMark else FactPediaIcons.BookMarkBorder,
                         contentDescription = "Bookmark",
                         onClick = { onBookmarkClick(!fact.isBookmarked) }

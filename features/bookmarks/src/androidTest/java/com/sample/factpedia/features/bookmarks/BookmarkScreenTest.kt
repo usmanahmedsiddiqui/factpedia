@@ -68,7 +68,6 @@ class BookmarkScreenTest {
             .onNodeWithTag("bookmark_${bookmarkedFact[0].id}")
             .performClick()
 
-        // Confirm Fact 1 is no longer shown
         composeTestRule.waitForIdle()
 
         composeTestRule.onNodeWithText(bookmarkedFact[0].fact).assertDoesNotExist()

@@ -26,7 +26,7 @@ class DefaultCategoryRepository @Inject constructor(
         categoryDao.getAllCategories().map { list -> list.map(CategoryEntity::asDomainModel) }
 
     override suspend fun loadRemoteCategories(): Response<List<Category>, DataError> {
-        delay(5000)
+        delay(3000)
         return handleError {
             categoryDataSource.getCategories().map(CategoryApiModel::asDomainModel)
         }

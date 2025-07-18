@@ -10,16 +10,18 @@ import com.sample.factpedia.core.common.result.PreconditionFailedException
 import com.sample.factpedia.core.common.result.TimeoutException
 import com.sample.factpedia.core.common.result.UnauthorizedException
 import com.sample.factpedia.core.common.result.UnavailableException
+import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.SocketTimeoutException
 
 @javax.inject.Singleton
-class ResponseInterceptor @javax.inject.Inject constructor() : okhttp3.Interceptor {
-    override fun intercept(chain: okhttp3.Interceptor.Chain): okhttp3.Response {
+class ResponseInterceptor @javax.inject.Inject constructor() : Interceptor {
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val request = chain.request()
         val response = try {
-            chain.proceed(chain.request())
+            chain.proceed(request)
         } catch (e: SocketTimeoutException) {
             throw TimeoutException()
         } catch (e: IOException) {

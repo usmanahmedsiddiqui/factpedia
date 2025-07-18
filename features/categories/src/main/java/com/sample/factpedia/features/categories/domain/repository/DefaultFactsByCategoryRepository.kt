@@ -15,7 +15,7 @@ class DefaultFactsByCategoryRepository @Inject constructor(
     @FactsByCategoryLocalDataSource private val factsByCategoryDataSource: FactsByCategoryDataSource,
 ): FactsByCategoryRepository {
     override suspend fun loadRemoteFactsByCategoryId(categoryId: Int): Response<List<Fact>, DataError> {
-        delay(5000)
+        delay(3000)
         return handleError {
             factsByCategoryDataSource.getFactsByCategoryId(categoryId).map { it.asDomainModel() }
         }

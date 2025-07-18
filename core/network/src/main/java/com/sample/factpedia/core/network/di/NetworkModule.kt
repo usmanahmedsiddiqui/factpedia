@@ -1,21 +1,26 @@
 package com.sample.factpedia.core.network.di
 
 import com.sample.factpedia.core.network.interceptor.ResponseInterceptor
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-@dagger.Module
-@dagger.hilt.InstallIn(dagger.hilt.components.SingletonComponent::class)
+@Module
+@InstallIn(SingletonComponent::class)
 class NetworkModule {
 
-    @dagger.Provides
-    @javax.inject.Singleton
+    @Provides
+    @Singleton
     fun provideLoggingInterceptor(): okhttp3.Interceptor {
         return okhttp3.logging.HttpLoggingInterceptor().apply {
             level = okhttp3.logging.HttpLoggingInterceptor.Level.BODY
         }
     }
 
-    @dagger.Provides
-    @javax.inject.Singleton
+    @Provides
+    @Singleton
     fun provideOkHttpClient(
         loggingInterceptor: okhttp3.Interceptor,
         responseInterceptor: ResponseInterceptor,
@@ -26,8 +31,8 @@ class NetworkModule {
             .build()
     }
 
-    @dagger.Provides
-    @javax.inject.Singleton
+    @Provides
+    @Singleton
     fun provideRetrofit(
         okHttpClient: okhttp3.OkHttpClient
     ): retrofit2.Retrofit {

@@ -12,6 +12,8 @@ class UITestPlugin : Plugin<Project> {
             add("androidTestImplementation", libs.findLibrary("compose.ui.test").get())
             add("androidTestImplementation", libs.findLibrary("androidx.ui.test.junit4.android").get())
             add("androidTestImplementation", libs.findLibrary("espresso.core").get())
+            add("androidTestImplementation", libs.findLibrary("okhttp3.mockwebserver").get())
+            add("androidTestImplementation", libs.findLibrary("jsonpath").get())
         }
     }
 }

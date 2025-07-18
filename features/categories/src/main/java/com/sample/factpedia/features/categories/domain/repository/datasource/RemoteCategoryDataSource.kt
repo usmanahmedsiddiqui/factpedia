@@ -7,8 +7,7 @@ import javax.inject.Inject
 
 class RemoteCategoryDataSource @Inject constructor(
     private val categoryApi: CategoryApi,
-): CategoryDataSource {
-    override suspend fun getCategories(): List<CategoryApiModel> {
-        return categoryApi.getCategories()
-    }
+) : CategoryDataSource {
+    override suspend fun getCategories(): List<CategoryApiModel> =
+        categoryApi.getCategories()
 }

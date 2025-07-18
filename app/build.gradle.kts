@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.setup.hilt)
     alias(libs.plugins.setup.serialization)
     alias(libs.plugins.setup.navigation)
+    alias(libs.plugins.setup.retrofit)
     alias(libs.plugins.setup.junit.testing)
     alias(libs.plugins.setup.ui.testing)
 }
@@ -14,12 +15,19 @@ android {
     defaultConfig {
         testInstrumentationRunner = "com.sample.factpedia.core.testing.FactPediaTestRunner"
     }
+
+    sourceSets {
+        getByName("androidTest") {
+            assets.srcDirs("src/androidTest/assets")
+        }
+    }
 }
 
 dependencies {
     implementation(projects.core.data)
     implementation(projects.core.designsystem)
     implementation(projects.core.model)
+    implementation(projects.core.network)
     implementation(projects.core.testing)
 
     implementation(projects.features.bookmarks)

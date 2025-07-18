@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "fact": "Fact 1",
+    "categoryId": 1,
+    "categoryName": "General"
+  },
+  {
+    "id": 2,
+    "fact": "Fact 2",
+    "categoryId": 2,
+    "categoryName": "Animals"
+  }
+]

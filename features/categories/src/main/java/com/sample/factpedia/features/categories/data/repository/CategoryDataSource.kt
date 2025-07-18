@@ -1,6 +1,5 @@
 package com.sample.factpedia.features.categories.data.repository
 
-import com.sample.factpedia.core.model.data.FactApiModel
 import com.sample.factpedia.features.categories.data.model.CategoryApiModel
 
 interface CategoryDataSource {

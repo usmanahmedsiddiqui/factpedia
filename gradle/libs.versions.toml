@@ -83,6 +83,8 @@ androidx-runner = { group = "androidx.test", name = "runner", version.ref = "run
 compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "compose" }
 androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "compose" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+okhttp3-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp3" }
+jsonpath = { group = "com.jayway.jsonpath", name = "json-path", version = "2.9.0" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

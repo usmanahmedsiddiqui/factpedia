@@ -15,7 +15,7 @@ class DefaultFeedRepository @Inject constructor(
     @FeedLocalDataSource private val feedDataSource: FeedDataSource,
 ) : FeedRepository {
     override suspend fun loadRemoteFacts(limit: Int): Response<List<Fact>, DataError> {
-        delay(5000)
+        delay(3000)
         return handleError {
             feedDataSource.getFeeds(limit).map { it.asDomainModel() }
         }

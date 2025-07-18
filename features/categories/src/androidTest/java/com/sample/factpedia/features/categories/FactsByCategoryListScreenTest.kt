@@ -81,7 +81,7 @@ class FactsByCategoryListScreenTest {
     }
 
     @Test
-    fun whenHasFacts_showsCategories() {
+    fun whenHasFacts_showsFacts() {
         val categoryName = "Science"
         val facts = listOf(
             BookmarkedFact(
@@ -116,8 +116,7 @@ class FactsByCategoryListScreenTest {
             )
             .assertExists()
 
-        composeTestRule
-            .onNodeWithText(
+        composeTestRule.onNodeWithText(
                 facts[0].fact,
             )
             .assertExists()

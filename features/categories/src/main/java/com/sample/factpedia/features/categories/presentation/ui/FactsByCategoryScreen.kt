@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -85,7 +86,9 @@ internal fun FactsByCategoryScreen(
                     text = categoryName,
                     textStyle = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.padding(Spacings.spacing16)
+                    modifier = Modifier
+                        .testTag("title_$categoryName")
+                        .padding(Spacings.spacing16)
                 )
 
                 LazyColumn {

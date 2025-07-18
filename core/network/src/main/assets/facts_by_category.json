@@ -1,0 +1,14 @@
+[
+  {
+    "id": 93,
+    "fact": "Fact 1",
+    "categoryId": 2,
+    "categoryName": "Celebrity"
+  },
+  {
+    "id": 94,
+    "fact": "Fact 2",
+    "categoryId": 2,
+    "categoryName": "Celebrity"
+  }
+]
