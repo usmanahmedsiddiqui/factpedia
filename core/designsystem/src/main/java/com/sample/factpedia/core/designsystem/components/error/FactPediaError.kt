@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import com.sample.factpedia.core.designsystem.components.button.FactPediaButton
 import com.sample.factpedia.core.designsystem.components.text.FactPediaText
 import com.sample.factpedia.core.designsystem.theme.Spacings
@@ -28,6 +29,7 @@ fun FactPediaError(
         FactPediaErrorText(text = text)
 
         FactPediaButton(
+            modifier = Modifier.testTag("retry_button"),
             text = "Retry",
             onClick = onRetry
         )

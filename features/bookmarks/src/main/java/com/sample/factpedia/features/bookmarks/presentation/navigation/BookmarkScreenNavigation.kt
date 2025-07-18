@@ -4,7 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.sample.factpedia.features.bookmarks.presentation.ui.BookmarkScreen
+import com.sample.factpedia.features.bookmarks.presentation.ui.BookmarksRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -15,7 +15,7 @@ fun NavHostController.navigateToBookmark(navOptions: NavOptions) {
 }
 
 fun NavGraphBuilder.bookmarksScreen() {
-    composable<BookmarkScreenRoute> { BookmarkScreen() }
+    composable<BookmarkScreenRoute> { BookmarksRoute() }
 }
 
 

@@ -5,7 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.sample.factpedia.features.categories.domain.model.Category
-import com.sample.factpedia.features.categories.presentation.ui.CategoryListScreen
+import com.sample.factpedia.features.categories.presentation.ui.CategoryListRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -17,6 +17,8 @@ fun NavHostController.navigateToFactByCategoryScreen(navOptions: NavOptions) {
 
 fun NavGraphBuilder.categoryListScreen(onCategoryClick: (Category) -> Unit) {
     composable<CategoryListScreenRoute> {
-        CategoryListScreen(onCategoryClick = onCategoryClick)
+        CategoryListRoute(
+            onCategoryClick = onCategoryClick
+        )
     }
 }

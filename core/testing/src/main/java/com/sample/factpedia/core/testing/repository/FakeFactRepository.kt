@@ -36,8 +36,6 @@ class FakeFactRepository : FactsRepository {
         localFacts.addAll(existing.values)
 
         factsFlow.emit(localFacts.toList())
-        println("Usman upsertFacts")
-
     }
 
     override suspend fun deleteFactsNotInCategory(categoryId: Int, factId: List<Int>) {

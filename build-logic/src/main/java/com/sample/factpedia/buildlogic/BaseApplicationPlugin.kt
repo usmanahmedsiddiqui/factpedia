@@ -24,7 +24,6 @@ class BaseApplicationPlugin: Plugin<Project>  {
                 targetSdk = libs.findVersion("targetSdk").get().toString().toInt()
                 versionCode = 1
                 versionName = "1.0"
-                testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             }
 
             buildTypes {

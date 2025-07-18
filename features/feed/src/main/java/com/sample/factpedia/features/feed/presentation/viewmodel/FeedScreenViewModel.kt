@@ -51,17 +51,14 @@ class FeedScreenViewModel @Inject constructor(
         val count = state.value.refreshCount + 1
         _state.update { it.copy(refreshCount = count) }
 
-        println("Usman count checking $count ${count % 3}")
         if (count % 3 == 0) prefetchFactsInBackground()
         loadFact()
     }
 
     private fun prefetchFactsInBackground() {
-        println("Usman prefetchFactsInBackground")
         viewModelScope.launch {
             feedRepository.loadRemoteFacts(LIMIT).fold(
                 onSuccess = {
-                    println("Usman load success")
                     factsRepository.upsertFacts(it)
                 },
                 onFailure = {}

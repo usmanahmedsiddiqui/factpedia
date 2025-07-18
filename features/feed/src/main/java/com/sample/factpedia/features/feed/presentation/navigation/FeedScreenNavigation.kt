@@ -4,7 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.sample.factpedia.features.feed.presentation.ui.FeedScreen
+import com.sample.factpedia.features.feed.presentation.ui.FactRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -15,5 +15,5 @@ fun NavHostController.navigateToFeed(navOptions: NavOptions) {
 }
 
 fun NavGraphBuilder.feedScreen() {
-    composable<FeedScreenRoute> { FeedScreen() }
+    composable<FeedScreenRoute> { FactRoute() }
 }

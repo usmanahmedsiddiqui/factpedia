@@ -4,11 +4,15 @@ plugins {
     alias(libs.plugins.setup.serialization)
     alias(libs.plugins.setup.hilt)
     alias(libs.plugins.setup.navigation)
-    alias(libs.plugins.setup.junit.testing)
+    alias(libs.plugins.setup.ui.testing)
 }
 
 android {
     namespace = "com.sample.factpedia.features.settings"
+
+    defaultConfig {
+        testInstrumentationRunner = "com.sample.factpedia.core.testing.FactPediaTestRunner"
+    }
 }
 
 dependencies {

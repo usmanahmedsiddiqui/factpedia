@@ -4,7 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.sample.factpedia.features.categories.presentation.ui.FactsByCategoryScreen
+import com.sample.factpedia.features.categories.presentation.ui.FactsByCategoryRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -17,6 +17,6 @@ fun NavHostController.navigateToFactByCategoryScreen(categoryId: Int, categoryNa
 fun NavGraphBuilder.factByCategoryScreen() {
     composable<FactsByCategoryScreenRoute> {
         val args = it.toRoute<FactsByCategoryScreenRoute>()
-        FactsByCategoryScreen(args.categoryId, args.categoryName)
+        FactsByCategoryRoute(args.categoryId, args.categoryName)
     }
 }

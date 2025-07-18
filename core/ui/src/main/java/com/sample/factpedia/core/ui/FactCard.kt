@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.platform.testTag
 import com.sample.factpedia.core.designsystem.components.icon.FactPediaIconButton
 import com.sample.factpedia.core.designsystem.components.tag.Tag
 import com.sample.factpedia.core.designsystem.icons.FactPediaIcons
@@ -61,7 +62,8 @@ fun FactCard(
                     )
 
                     FactPediaIconButton(
-                        if (fact.isBookmarked) FactPediaIcons.BookMark else FactPediaIcons.BookMarkBorder,
+                        modifier = if (fact.isBookmarked) Modifier.testTag("bookmark_${fact.id}") else Modifier.testTag("unbookmark_${fact.id}"),
+                        icon = if (fact.isBookmarked) FactPediaIcons.BookMark else FactPediaIcons.BookMarkBorder,
                         contentDescription = "Bookmark",
                         onClick = { onBookmarkClick(!fact.isBookmarked) }
                     )

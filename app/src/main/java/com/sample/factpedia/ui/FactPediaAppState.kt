@@ -5,6 +5,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
@@ -19,6 +20,9 @@ import com.sample.factpedia.features.search.presentation.navigation.navigateToSe
 import com.sample.factpedia.features.settings.presentation.navigation.SettingsScreenRoute
 import com.sample.factpedia.features.settings.presentation.navigation.navigateToSettings
 import com.sample.factpedia.navigation.TopLevelDestination
+import com.sample.factpedia.features.search.R as SearchR
+import com.sample.factpedia.features.settings.R as SettingsR
+import com.sample.factpedia.features.categories.R as CategoriesR
 
 @Composable
 fun rememberFactPediaAppState(
@@ -80,9 +84,9 @@ class FactPediaAppState(
     @Composable
     fun getNavigationTitle(): String? {
         return when {
-            currentDestination?.hasRoute(SettingsScreenRoute::class) == true -> "Settings"
-            currentDestination?.hasRoute(SearchScreenRoute::class) == true -> "Search"
-            currentDestination?.hasRoute(FactsByCategoryScreenRoute::class) == true -> "Facts"
+            currentDestination?.hasRoute(SettingsScreenRoute::class) == true -> stringResource(SettingsR.string.feature_settings_title)
+            currentDestination?.hasRoute(SearchScreenRoute::class) == true -> stringResource(SearchR.string.feature_search_title)
+            currentDestination?.hasRoute(FactsByCategoryScreenRoute::class) == true -> stringResource(CategoriesR.string.feature_facts_by_category_title)
             else -> null
         }
     }

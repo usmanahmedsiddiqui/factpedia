@@ -3,7 +3,7 @@ package com.sample.factpedia.features.search.presentation.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import com.sample.factpedia.features.search.presentation.ui.SearchScreen
+import com.sample.factpedia.features.search.presentation.ui.SearchRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -14,5 +14,5 @@ fun NavHostController.navigateToSearch() {
 }
 
 fun NavGraphBuilder.searchScreen() {
-    composable<SearchScreenRoute> { SearchScreen() }
+    composable<SearchScreenRoute> { SearchRoute() }
 }

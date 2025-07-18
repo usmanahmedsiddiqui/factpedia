@@ -63,5 +63,10 @@ gradlePlugin {
             id = "com.sample.factpedia.plugin.setup-junit-testing"
             implementationClass = "com.sample.factpedia.buildlogic.JUnitTestPlugin"
         }
+
+        register("setup-ui-testing") {
+            id = "com.sample.factpedia.plugin.setup-ui-testing"
+            implementationClass = "com.sample.factpedia.buildlogic.UITestPlugin"
+        }
     }
 }

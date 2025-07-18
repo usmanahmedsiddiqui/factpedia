@@ -13,6 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sample.factpedia.core.common.utils.toUiMessageRes
@@ -21,31 +24,49 @@ import com.sample.factpedia.core.designsystem.components.error.FactPediaError
 import com.sample.factpedia.core.designsystem.components.loading.FactPediaLoadingBar
 import com.sample.factpedia.core.designsystem.components.text.FactPediaText
 import com.sample.factpedia.core.designsystem.theme.Spacings
+import com.sample.factpedia.features.categories.R
 import com.sample.factpedia.features.categories.domain.model.Category
 import com.sample.factpedia.features.categories.presentation.actions.CategoryScreenAction
+import com.sample.factpedia.features.categories.presentation.state.CategoryScreenState
 import com.sample.factpedia.features.categories.presentation.viewmodel.CategoriesViewModel
 
 @Composable
-fun CategoryListScreen(
-    viewModel: CategoriesViewModel = hiltViewModel(), onCategoryClick: (Category) -> Unit
+fun CategoryListRoute(
+    viewModel: CategoriesViewModel = hiltViewModel(),
+    onCategoryClick: (Category) -> Unit,
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle().value
+    CategoryListScreen(
+        state = state,
+        onCategoryClick = onCategoryClick,
+        onRetryClicked = { viewModel.onAction(CategoryScreenAction.RetryClicked) },
+    )
+}
 
+@Composable
+internal fun CategoryListScreen(
+    state: CategoryScreenState,
+    onCategoryClick: (Category) -> Unit,
+    onRetryClicked: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
         when {
             state.isLoading -> {
+                val loadingDescription = stringResource(R.string.feature_categories_loading)
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    FactPediaLoadingBar()
+                    FactPediaLoadingBar(
+                        Modifier.semantics { contentDescription = loadingDescription }
+                    )
                 }
             }
 
-            !state.isLoading && state.categories.isNotEmpty() -> {
+            state.categories.isNotEmpty() -> {
                 LazyColumn {
                     items(state.categories) { category ->
                         FactPediaText(
@@ -68,7 +89,7 @@ fun CategoryListScreen(
                 ) {
                     FactPediaError(
                         text = state.error.toUiMessageRes(LocalContext.current),
-                        onRetry = { viewModel.onAction(CategoryScreenAction.RetryClicked) }
+                        onRetry = { onRetryClicked() }
                     )
                 }
             }
@@ -79,23 +100,9 @@ fun CategoryListScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     FactPediaEmptyMessage(
-                        text = "No categories found!"
+                        text = stringResource(R.string.feature_no_categories_found)
                     )
                 }
-            }
-
-        }
-
-
-        if (state.error != null && state.categories.isEmpty()) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                FactPediaError(
-                    text = state.error.toUiMessageRes(LocalContext.current),
-                    onRetry = { viewModel.onAction(CategoryScreenAction.RetryClicked) }
-                )
             }
         }
     }

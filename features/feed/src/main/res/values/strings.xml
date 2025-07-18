@@ -1,0 +1,8 @@
+<resources>
+    <string name="feature_feed_title">Feed</string>
+    <string name="feature_feed_no_fact_found">No Fact found!</string>
+    <string name="feature_feed_loading">Feed loading</string>
+    <string name="feature_feed_did_you_know">Did You Know?</string>
+    <string name="feature_feed_explore_facts">Explore interesting facts curated for your curiosity.</string>
+    <string name="feature_feed_next_fact">Next Fact.</string>
+</resources>

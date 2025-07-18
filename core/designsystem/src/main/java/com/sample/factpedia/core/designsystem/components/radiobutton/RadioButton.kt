@@ -4,13 +4,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 
 @Composable
 fun FactPediaRadioButton(
+    modifier: Modifier = Modifier,
     selected: Boolean,
     onClick: () -> Unit,
 ) {
     RadioButton(
+        modifier = modifier,
         selected = selected,
         onClick = onClick,
         colors = RadioButtonDefaults.colors(

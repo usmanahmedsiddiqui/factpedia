@@ -3,6 +3,7 @@ package com.sample.factpedia.features.settings.presentation.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import com.sample.factpedia.features.settings.presentation.ui.SettingsRoute
 import com.sample.factpedia.features.settings.presentation.ui.SettingsScreen
 import kotlinx.serialization.Serializable
 
@@ -14,5 +15,5 @@ fun NavHostController.navigateToSettings() {
 }
 
 fun NavGraphBuilder.settingsScreen() {
-    composable<SettingsScreenRoute> { SettingsScreen() }
+    composable<SettingsScreenRoute> { SettingsRoute() }
 }

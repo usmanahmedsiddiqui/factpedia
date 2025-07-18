@@ -6,7 +6,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import com.sample.factpedia.core.designsystem.components.text.FactPediaText
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -23,6 +25,7 @@ fun FactPediaNavigationTopBar(
         ),
         title = {
             FactPediaText(
+                modifier = Modifier.testTag("title_${text}"),
                 text = text,
                 textStyle = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onPrimary

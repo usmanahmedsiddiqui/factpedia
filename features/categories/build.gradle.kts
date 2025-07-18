@@ -6,11 +6,16 @@ plugins {
     alias(libs.plugins.setup.retrofit)
     alias(libs.plugins.setup.navigation)
     alias(libs.plugins.setup.junit.testing)
+    alias(libs.plugins.setup.ui.testing)
 
 }
 
 android {
     namespace = "com.sample.factpedia.features.categories"
+
+    defaultConfig {
+        testInstrumentationRunner = "com.sample.factpedia.core.testing.FactPediaTestRunner"
+    }
 }
 
 dependencies {

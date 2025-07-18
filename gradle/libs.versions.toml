@@ -1,9 +1,9 @@
 [versions]
-gradle = "8.2.2"
-kotlinGradlePlugin = "1.9.22"
 minSdk = "24"
 compileSdk = "35"
 targetSdk = "35"
+gradle = "8.2.2"
+kotlinGradlePlugin = "1.9.22"
 agp = "8.10.1"
 kotlin = "2.1.21"
 compose = "1.8.3"
@@ -22,6 +22,8 @@ coroutines = "1.10.2"
 junit5 = "5.13.1"
 truth = "1.4.4"
 turbine = "1.2.0"
+runner = "1.6.2"
+espresso = "3.6.1"
 
 [libraries]
 
@@ -40,6 +42,7 @@ hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-com
 # Dependency Injection
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 
 # Kotlin
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
@@ -76,6 +79,10 @@ kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.re
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
+compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "compose" }
+androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "compose" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -98,4 +105,5 @@ setup-retrofit = { id = "com.sample.factpedia.plugin.setup-retrofit", version.re
 setup-room = { id = "com.sample.factpedia.plugin.setup-room", version.ref = "pluginVersion" }
 setup-serialization = { id = "com.sample.factpedia.plugin.setup-serialization", version.ref = "pluginVersion" }
 setup-junit-testing = { id = "com.sample.factpedia.plugin.setup-junit-testing", version.ref = "pluginVersion" }
+setup-ui-testing = { id = "com.sample.factpedia.plugin.setup-ui-testing", version.ref = "pluginVersion" }
 

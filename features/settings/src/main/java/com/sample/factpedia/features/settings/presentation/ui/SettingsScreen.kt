@@ -13,27 +13,44 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sample.factpedia.core.designsystem.components.radiobutton.FactPediaRadioButton
 import com.sample.factpedia.core.designsystem.components.text.FactPediaText
 import com.sample.factpedia.core.designsystem.theme.Spacings
 import com.sample.factpedia.core.model.domain.ThemePreference
+import com.sample.factpedia.features.settings.R
 import com.sample.factpedia.features.settings.presentation.actions.SettingsScreenAction
 import com.sample.factpedia.features.settings.presentation.viewmodel.SettingsViewModel
 
 @Composable
-fun SettingsScreen(
+fun SettingsRoute(
     viewModel: SettingsViewModel = hiltViewModel()
+) {
+    val currentTheme = viewModel.state.collectAsState().value
+    SettingsScreen(
+        currentTheme = currentTheme,
+        onThemeChanged = {
+            viewModel.onAction(SettingsScreenAction.ThemeChanged(it))
+        }
+    )
+}
+
+@Composable
+internal fun SettingsScreen(
+    currentTheme: ThemePreference,
+    onThemeChanged: (ThemePreference) -> Unit,
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(Spacings.spacing16)
     ) {
-        val currentTheme = viewModel.state.collectAsState().value
+
         FactPediaText(
-            text = "Choose Theme",
+            text = stringResource(R.string.feature_choose_theme),
             textStyle = MaterialTheme.typography.headlineSmall,
             color = MaterialTheme.colorScheme.onPrimary
         )
@@ -45,12 +62,13 @@ fun SettingsScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { viewModel.onAction(SettingsScreenAction.ThemeChanged(preference)) }
+                    .clickable { onThemeChanged(preference) }
                     .padding(8.dp)
             ) {
                 FactPediaRadioButton(
                     selected = preference == currentTheme,
-                    onClick = { viewModel.onAction(SettingsScreenAction.ThemeChanged(preference)) }
+                    onClick = { onThemeChanged(preference) },
+                    modifier = Modifier.testTag("theme_radio_${preference.name.lowercase()}")
                 )
 
                 FactPediaText(
