@@ -15,12 +15,6 @@ android {
     defaultConfig {
         testInstrumentationRunner = "com.sample.factpedia.core.testing.FactPediaTestRunner"
     }
-
-    sourceSets {
-        getByName("androidTest") {
-            assets.srcDirs("src/androidTest/assets")
-        }
-    }
 }
 
 dependencies {

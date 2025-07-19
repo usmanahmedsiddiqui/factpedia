@@ -1,11 +1,11 @@
 package com.sample.factpedia.features.categories.presentation.ui
 
+import android.content.res.Configuration
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sample.factpedia.core.common.utils.toUiMessageRes
@@ -22,8 +23,12 @@ import com.sample.factpedia.core.designsystem.components.empty.FactPediaEmptyMes
 import com.sample.factpedia.core.designsystem.components.error.FactPediaError
 import com.sample.factpedia.core.designsystem.components.loading.FactPediaLoadingBar
 import com.sample.factpedia.core.designsystem.components.text.FactPediaText
+import com.sample.factpedia.core.designsystem.theme.FactPediaGradientBackground
+import com.sample.factpedia.core.designsystem.theme.FactPediaTheme
 import com.sample.factpedia.core.designsystem.theme.Spacings
+import com.sample.factpedia.core.model.domain.BookmarkedFact
 import com.sample.factpedia.core.ui.FactCard
+import com.sample.factpedia.core.ui.PreviewAwareLazyColumn
 import com.sample.factpedia.features.categories.R
 import com.sample.factpedia.features.categories.presentation.actions.FactsByCategoryScreenAction
 import com.sample.factpedia.features.categories.presentation.state.FactsByCategoryScreenState
@@ -58,6 +63,7 @@ fun FactsByCategoryRoute(
 
 @Composable
 internal fun FactsByCategoryScreen(
+    isPreview: Boolean = false,
     categoryName: String,
     state: FactsByCategoryScreenState,
     onRetryClicked: () -> Unit,
@@ -91,20 +97,21 @@ internal fun FactsByCategoryScreen(
                         .padding(Spacings.spacing16)
                 )
 
-                LazyColumn {
-                    items(state.facts) { item ->
-                        FactCard(
-                            fact = item,
-                            modifier = Modifier.padding(
-                                horizontal = Spacings.spacing16,
-                                vertical = Spacings.spacing8
-                            ),
-                            onBookmarkClick = { isBookmarked ->
-                                onToggleBookmark(item.id, isBookmarked)
-                            },
-                            onShareClick = {}
-                        )
-                    }
+                PreviewAwareLazyColumn(
+                    isPreview = isPreview,
+                    items = state.facts
+                ) { fact ->
+                    FactCard(
+                        fact = fact,
+                        modifier = Modifier.padding(
+                            horizontal = Spacings.spacing16,
+                            vertical = Spacings.spacing8
+                        ),
+                        onBookmarkClick = { isBookmarked ->
+                            onToggleBookmark(fact.id, isBookmarked)
+                        },
+                        onShareClick = {}
+                    )
                 }
             }
 
@@ -133,6 +140,50 @@ internal fun FactsByCategoryScreen(
                     )
                 }
             }
+        }
+    }
+}
+
+@Preview(
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
+)
+@Preview(
+    name = "Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
+)
+@Composable
+fun FactsByCategoryScreenPreview() {
+    FactPediaTheme {
+        val isDark = isSystemInDarkTheme()
+        FactPediaGradientBackground(isDark = isDark) {
+            FactsByCategoryScreen(
+                isPreview = true,
+                categoryName = "Animals",
+                state = FactsByCategoryScreenState(
+                  isLoading = false,
+                    error = null,
+                    facts = listOf(
+                        BookmarkedFact(
+                            id = 1,
+                            fact = "Cats sleep for 70% of their lives.",
+                            categoryName = "Animals",
+                            categoryId = 10,
+                            isBookmarked = true
+                        ),
+                        BookmarkedFact(
+                            id = 2,
+                            fact = "A giraffe's tongue is blue and can be 20 inches long.",
+                            categoryName = "Animals",
+                            categoryId = 11,
+                            isBookmarked = true
+                        )
+                    )
+                ),
+                onRetryClicked = {},
+                onToggleBookmark = { _, _ -> }
+
+            )
         }
     }
 }

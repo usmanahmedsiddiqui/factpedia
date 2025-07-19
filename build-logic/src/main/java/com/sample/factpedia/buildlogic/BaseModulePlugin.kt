@@ -39,6 +39,8 @@ class BaseModulePlugin: Plugin<Project>  {
                     excludes += "/META-INF/LICENSE-notice.md"
                 }
             }
+
+            experimentalProperties["android.experimental.enableScreenshotTest"] = true
         }
     }
 

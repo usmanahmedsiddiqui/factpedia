@@ -1,5 +1,7 @@
 package com.sample.factpedia.features.feed.presentation.ui
 
+import android.content.res.Configuration
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sample.factpedia.core.common.utils.toUiMessageRes
@@ -24,7 +27,10 @@ import com.sample.factpedia.core.designsystem.components.empty.FactPediaEmptyMes
 import com.sample.factpedia.core.designsystem.components.error.FactPediaError
 import com.sample.factpedia.core.designsystem.components.loading.FactPediaLoadingBar
 import com.sample.factpedia.core.designsystem.components.text.FactPediaText
+import com.sample.factpedia.core.designsystem.theme.FactPediaGradientBackground
+import com.sample.factpedia.core.designsystem.theme.FactPediaTheme
 import com.sample.factpedia.core.designsystem.theme.Spacings
+import com.sample.factpedia.core.model.domain.BookmarkedFact
 import com.sample.factpedia.core.ui.FactCard
 import com.sample.factpedia.features.feed.R
 import com.sample.factpedia.features.feed.presentation.actions.FeedScreenAction
@@ -128,6 +134,39 @@ internal fun FeedScreen(
                     text = stringResource(R.string.feature_feed_no_fact_found)
                 )
             }
+        }
+    }
+}
+
+@Preview(
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+)
+@Preview(
+    name = "Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
+)
+@Composable
+fun FeedScreenPreview() {
+    FactPediaTheme {
+        val isDark = isSystemInDarkTheme()
+        FactPediaGradientBackground(isDark = isDark) {
+            FeedScreen(
+                state = FeedScreenState(
+                    isLoading = false,
+                    error = null,
+                    fact =  BookmarkedFact(
+                        id = 1,
+                        fact = "Cats sleep for 70% of their lives.",
+                        categoryName = "Animals",
+                        categoryId = 10,
+                        isBookmarked = true
+                    )
+                ),
+                onRetryClicked = {},
+                onToggleBookmark = { _, _ -> },
+                onNextFact = {}
+            )
         }
     }
 }

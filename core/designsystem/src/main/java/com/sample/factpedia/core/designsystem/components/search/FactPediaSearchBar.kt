@@ -7,13 +7,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
 import com.sample.factpedia.core.designsystem.components.icon.FactPediaIconButton
 import com.sample.factpedia.core.designsystem.components.text.FactPediaText
 import com.sample.factpedia.core.designsystem.icons.FactPediaIcons
 import com.sample.factpedia.core.designsystem.theme.Spacings
-import com.sample.factpedia.designsystem.R
 
 @Composable
 fun FactPediaSearchBar(

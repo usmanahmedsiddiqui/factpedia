@@ -1,6 +1,8 @@
 package com.sample.factpedia.features.settings.presentation.ui
 
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,10 +17,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sample.factpedia.core.designsystem.components.radiobutton.FactPediaRadioButton
 import com.sample.factpedia.core.designsystem.components.text.FactPediaText
+import com.sample.factpedia.core.designsystem.theme.FactPediaGradientBackground
+import com.sample.factpedia.core.designsystem.theme.FactPediaTheme
 import com.sample.factpedia.core.designsystem.theme.Spacings
 import com.sample.factpedia.core.model.domain.ThemePreference
 import com.sample.factpedia.features.settings.R
@@ -77,6 +82,27 @@ internal fun SettingsScreen(
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
+        }
+    }
+}
+
+@Preview(
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+)
+@Preview(
+    name = "Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
+)
+@Composable
+fun BookmarksScreenPreview() {
+    FactPediaTheme {
+        val isDark = isSystemInDarkTheme()
+        FactPediaGradientBackground(isDark = isDark) {
+            SettingsScreen(
+                currentTheme = if (isDark) ThemePreference.DARK else ThemePreference.LIGHT,
+                onThemeChanged = {}
+            )
         }
     }
 }

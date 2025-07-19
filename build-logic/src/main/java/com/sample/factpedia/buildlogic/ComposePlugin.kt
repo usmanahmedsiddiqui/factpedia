@@ -14,7 +14,7 @@ class ComposePlugin : Plugin<Project> {
             add("implementation", libs.findLibrary("compose.material3").get())
             add("implementation", libs.findLibrary("androidx.activity.compose").get())
             add("implementation", libs.findLibrary("compose.icons.extended").get())
-            add("debugImplementation", libs.findLibrary("compose-tooling").get())
+            add("debugImplementation", libs.findLibrary("compose.tooling").get())
         }
     }
 }

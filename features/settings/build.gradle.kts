@@ -5,6 +5,9 @@ plugins {
     alias(libs.plugins.setup.hilt)
     alias(libs.plugins.setup.navigation)
     alias(libs.plugins.setup.ui.testing)
+    alias(libs.plugins.setup.screenshot.testing)
+    alias(libs.plugins.compose.screenshot)
+
 }
 
 android {

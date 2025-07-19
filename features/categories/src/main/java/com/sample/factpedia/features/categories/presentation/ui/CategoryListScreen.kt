@@ -1,13 +1,13 @@
 package com.sample.factpedia.features.categories.presentation.ui
 
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sample.factpedia.core.common.utils.toUiMessageRes
@@ -23,7 +24,10 @@ import com.sample.factpedia.core.designsystem.components.empty.FactPediaEmptyMes
 import com.sample.factpedia.core.designsystem.components.error.FactPediaError
 import com.sample.factpedia.core.designsystem.components.loading.FactPediaLoadingBar
 import com.sample.factpedia.core.designsystem.components.text.FactPediaText
+import com.sample.factpedia.core.designsystem.theme.FactPediaGradientBackground
+import com.sample.factpedia.core.designsystem.theme.FactPediaTheme
 import com.sample.factpedia.core.designsystem.theme.Spacings
+import com.sample.factpedia.core.ui.PreviewAwareLazyColumn
 import com.sample.factpedia.features.categories.R
 import com.sample.factpedia.features.categories.domain.model.Category
 import com.sample.factpedia.features.categories.presentation.actions.CategoryScreenAction
@@ -48,6 +52,7 @@ internal fun CategoryListScreen(
     state: CategoryScreenState,
     onCategoryClick: (Category) -> Unit,
     onRetryClicked: () -> Unit,
+    inPreview: Boolean = false,
 ) {
     Column(
         modifier = Modifier
@@ -67,18 +72,19 @@ internal fun CategoryListScreen(
             }
 
             state.categories.isNotEmpty() -> {
-                LazyColumn {
-                    items(state.categories) { category ->
-                        FactPediaText(
-                            text = category.name,
-                            textStyle = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable { onCategoryClick(category) }
-                                .padding(Spacings.spacing16)
-                        )
-                    }
+                PreviewAwareLazyColumn(
+                    isPreview = inPreview,
+                    items = state.categories
+                ) { category ->
+                    FactPediaText(
+                        text = category.name,
+                        textStyle = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onCategoryClick(category) }
+                            .padding(Spacings.spacing16)
+                    )
                 }
             }
 
@@ -104,6 +110,47 @@ internal fun CategoryListScreen(
                     )
                 }
             }
+        }
+    }
+}
+
+
+@Preview(
+    name = "Dark Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
+)
+@Preview(
+    name = "Light Mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
+)
+@Composable
+fun CategoryScreenPreview() {
+    FactPediaTheme {
+        val isDark = isSystemInDarkTheme()
+        FactPediaGradientBackground(isDark = isDark) {
+            CategoryListScreen(
+                inPreview = true,
+                state = CategoryScreenState(
+                    isLoading = false,
+                    error = null,
+                    categories = listOf(
+                        Category(
+                            id = 1,
+                            name = "Animals",
+                        ),
+                        Category(
+                            id = 1,
+                            name = "General",
+                        ),
+                        Category(
+                            id = 1,
+                            name = "Celebrity",
+                        ),
+                    )
+                ),
+                onCategoryClick = {},
+                onRetryClicked = {},
+            )
         }
     }
 }

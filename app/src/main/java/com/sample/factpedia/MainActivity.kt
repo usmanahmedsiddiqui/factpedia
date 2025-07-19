@@ -19,7 +19,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
             val viewModel: MainActivityViewModel = hiltViewModel()
             val appState = rememberFactPediaAppState()
             val themePreference = viewModel.state.collectAsStateWithLifecycle().value

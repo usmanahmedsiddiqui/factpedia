@@ -7,7 +7,8 @@ plugins {
     alias(libs.plugins.setup.navigation)
     alias(libs.plugins.setup.junit.testing)
     alias(libs.plugins.setup.ui.testing)
-
+    alias(libs.plugins.compose.screenshot)
+    alias(libs.plugins.setup.screenshot.testing)
 }
 
 android {
