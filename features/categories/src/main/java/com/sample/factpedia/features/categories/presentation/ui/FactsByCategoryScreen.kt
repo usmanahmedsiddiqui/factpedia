@@ -99,7 +99,8 @@ internal fun FactsByCategoryScreen(
 
                 PreviewAwareLazyColumn(
                     isPreview = isPreview,
-                    items = state.facts
+                    items = state.facts,
+                    modifier = Modifier.testTag("factsByCategory:list").semantics { contentDescription = "factsByCategory:list" }
                 ) { fact ->
                     FactCard(
                         fact = fact,

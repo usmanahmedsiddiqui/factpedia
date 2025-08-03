@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -74,7 +75,8 @@ internal fun CategoryListScreen(
             state.categories.isNotEmpty() -> {
                 PreviewAwareLazyColumn(
                     isPreview = inPreview,
-                    items = state.categories
+                    items = state.categories,
+                    modifier = Modifier.testTag("categories:list").semantics { contentDescription = "categories:list" }
                 ) { category ->
                     FactPediaText(
                         text = category.name,
