@@ -22,9 +22,9 @@ class ResponseInterceptor @javax.inject.Inject constructor() : Interceptor {
         val request = chain.request()
         val response = try {
             chain.proceed(request)
-        } catch (e: SocketTimeoutException) {
+        } catch (_: SocketTimeoutException) {
             throw TimeoutException()
-        } catch (e: IOException) {
+        } catch (_: IOException) {
             throw NetworkException()
         }
 

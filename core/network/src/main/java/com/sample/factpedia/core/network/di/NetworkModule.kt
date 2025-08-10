@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -37,11 +38,11 @@ class NetworkModule {
         okHttpClient: okhttp3.OkHttpClient
     ): retrofit2.Retrofit {
         return retrofit2.Retrofit.Builder()
-            .addConverterFactory(retrofit2.converter.gson.GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .baseUrl(BASE_URL)
             .build()
     }
 }
 
-private const val BASE_URL = "https://api.api-ninjas.com/v1/"
+private const val BASE_URL = ""
